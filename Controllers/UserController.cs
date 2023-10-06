@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tidsbanken_BackEnd.Data;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
@@ -14,22 +16,29 @@ namespace Tidsbanken_BackEnd.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly TidsbankenDbContext _context;
+        // Private field to store an instance of the ServiceFacade, providing access to character-related services.
+        private readonly ServiceFacade _serviceFacade;
 
-        public UserController(TidsbankenDbContext context)
+        // Private field to store an instance of the auto mapper.
+        private readonly IMapper _mapper;
+
+        // Constructor for the CharacterController, which takes a ServiceFacade as a dependency.
+        public UserController(ServiceFacade serviceFacade, IMapper mapper)
         {
-            _context = context;
+            // Initialize the serviceFacade field with the provided instance of ServiceFacade.
+            _serviceFacade = serviceFacade;
+            // Initialize the _mapper field with the provided instance of Imapper.
+            _mapper = mapper;
         }
 
-        // GET: api/User
+        /// <summary>
+        /// Get all Characters
+        /// </summary>
+        /// <returns>A list of characters.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharacters()
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
+            return Ok(_mapper.Map<List<CharacterDTO>>(await _serviceFacade._characterService.GetAllAsync()));
         }
 
         // GET: api/User/5

@@ -1,24 +1,38 @@
 ﻿using System;
-using System.Xml.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Data.Entities
 {
-	public class VacationRequest
-	{
+    public class VacationRequest
+    {
         public int Id { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
+
+        [Required]
         public DateTime EndDate { get; set; }
+
+        [Required]
         public DateTime RequestDate { get; set; }
-        public DateTime ApprovalDate { get; set; }
+
+        public DateTime? ApprovalDate { get; set; }
+
+        [Required]
         public VacationRequestStatus Status { get; set; }
-        public int? UserId { get; set; }
-        public int? ApproverId { get; set; }
-        public int? StatusId { get; set; }
+
+        [Required]
+        [ForeignKey("User")]
+        public required int UserId { get; set; } // Nullable for optional user
+
+        [ForeignKey("Approver")]
+        public int? ApproverId { get; set; } // Nullable for optional approver
 
         // Navigation properties
-        public User? User { get; set; } // Makes
-        public User? Approver { get; set; }
-        public ICollection<Comment>? Comments { get; set; } // Has
+        public required User User { get; set; }
+        public required User Approver { get; set; }
+        public required ICollection<Comment> Comments { get; set; }
     }
 }

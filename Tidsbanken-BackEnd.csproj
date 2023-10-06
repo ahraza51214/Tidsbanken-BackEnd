@@ -39,6 +39,10 @@
     <None Remove="Services\VacationRequestService\" />
     <None Remove="Services\CommentService\" />
     <None Remove="Services\IneligiblePeriodService\" />
+    <None Remove="Data\DTOs\UserDTOs\" />
+    <None Remove="Data\DTOs\CommentDTOs\" />
+    <None Remove="Data\DTOs\IneligiblePeriodDTOs\" />
+    <None Remove="Data\DTOs\VacationRequestDTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -53,5 +57,9 @@
     <Folder Include="Services\VacationRequestService\" />
     <Folder Include="Services\CommentService\" />
     <Folder Include="Services\IneligiblePeriodService\" />
+    <Folder Include="Data\DTOs\UserDTOs\" />
+    <Folder Include="Data\DTOs\CommentDTOs\" />
+    <Folder Include="Data\DTOs\IneligiblePeriodDTOs\" />
+    <Folder Include="Data\DTOs\VacationRequestDTOs\" />
   </ItemGroup>
 </Project>

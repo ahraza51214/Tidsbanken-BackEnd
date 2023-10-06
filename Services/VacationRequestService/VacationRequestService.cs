@@ -1,37 +1,90 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Tidsbanken_BackEnd.Data;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Exceptions;
 
 namespace Tidsbanken_BackEnd.Services.VacationRequestService
 {
 	public class VacationRequestService : IVacationRequestService
 	{
-		public VacationRequestService()
-		{
-		}
+        // Database context for VacationRequest-related methods.
+        private readonly TidsbankenDbContext _context;
 
-        public Task<VacationRequest> AddAsync(VacationRequest obj)
+        // Constructor to initialize the VacationRequestService with TidsbankenDbContext.
+        public VacationRequestService(TidsbankenDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteAsync(int id)
+        // Get all VacationRequest asynchronously.
+        public async Task<IEnumerable<VacationRequest>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.VacationRequests.ToListAsync();
         }
 
-        public Task<IEnumerable<VacationRequest>> GetAllAsync()
+
+        // Get a VacationRequest by its ID asynchronously.
+        public async Task<VacationRequest?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var VacationRequest = await _context.VacationRequests.Where(v => v.Id == id).FirstAsync();
+            if (VacationRequest is null)
+            {
+                // Throw an exception if the VacationRequest with the specified ID is not found.
+                throw new VacationRequestNotFoundException(id);
+            }
+            return VacationRequest;
         }
 
-        public Task<VacationRequest?> GetByIdAsync(int id)
+
+        // Update a VacationRequest asynchronously.
+        public async Task<VacationRequest> UpdateAsync(VacationRequest obj)
         {
-            throw new NotImplementedException();
+            // Check if the VacationRequest with the given ID exists.
+            if (!await VacationRequestExists(obj.Id))
+            {
+                // Throw an Exception if the VacationRequest is not found.
+                throw new VacationRequestNotFoundException(obj.Id);
+            }
+
+            // Mark the VacationRequest entity as modified and save changes to the database.
+            _context.Entry(obj).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return obj;
         }
 
-        public Task<VacationRequest> UpdateAsync(VacationRequest obj)
+
+        // Add a new VacationRequest asynchronously.
+        public async Task<VacationRequest> AddAsync(VacationRequest obj)
         {
-            throw new NotImplementedException();
+            // Add the VacationRequest to the database and save changes.
+            await _context.VacationRequests.AddAsync(obj);
+            await _context.SaveChangesAsync();
+            return obj;
+        }
+
+
+        // Delete a VacationRequest by ID asynchronously.
+        public async Task DeleteAsync(int id)
+        {
+            // Check if the VacationRequest with the given ID exists.
+            if (!await VacationRequestExists(id))
+            {
+                // Throw an exception if the VacationRequest is not found.
+                throw new VacationRequestNotFoundException(id);
+            }
+            // Find and remove the VacationRequest from the database.
+            var vacationRequest = await _context.VacationRequests.FindAsync(id);
+            _context.VacationRequests.Remove(vacationRequest);
+            await _context.SaveChangesAsync();
+        }
+
+
+        // Check if a VacationRequest with a given ID exists in the database.
+        private async Task<bool> VacationRequestExists(int id)
+        {
+            return await _context.VacationRequests.AnyAsync(v => v.Id == id);
         }
     }
 }

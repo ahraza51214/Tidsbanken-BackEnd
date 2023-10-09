@@ -1,4 +1,5 @@
 using System;
+using System.Net.Mime;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tidsbanken_BackEnd.Data.DTOs.CommentDTOs;
@@ -10,6 +11,9 @@ namespace Tidsbanken_BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class CommentController : ControllerBase
     {
         // Private field to store an instance of the ServiceFacade, providing access to Comment-related services.

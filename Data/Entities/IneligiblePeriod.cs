@@ -22,6 +22,6 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public int UserId { get; set; }
 
         // Navigation properties
-        public required User User { get; set; }
+        public User? User { get; set; }
     }
 }

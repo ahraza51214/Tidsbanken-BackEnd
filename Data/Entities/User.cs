@@ -35,10 +35,10 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public int RoleId { get; set; } // Non-nullable for mandatory role associatione
 
         // Navigation properties
-        public required Role Role { get; set; }
-        public required ICollection<VacationRequest> VacationRequests { get; set; }
-        public required ICollection<IneligiblePeriod> IneligiblePeriods { get; set; }
-        public required ICollection<Comment> Comments { get; set; }
+        public Role? Role { get; set; }
+        public ICollection<VacationRequest>? VacationRequests { get; set; }
+        public ICollection<IneligiblePeriod>? IneligiblePeriods { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
 
         public User()
         {

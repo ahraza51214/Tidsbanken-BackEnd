@@ -28,6 +28,6 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
 
         // Navigation properties
-        public required VacationRequest VacationRequest { get; set; }
+        public VacationRequest? VacationRequest { get; set; }
     }
 }

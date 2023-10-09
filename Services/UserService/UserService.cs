@@ -20,7 +20,7 @@ namespace Tidsbanken_BackEnd.Services.UserService
         // Get all Users asynchronously.
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(u => u.Role).ToListAsync();
         }
 
 

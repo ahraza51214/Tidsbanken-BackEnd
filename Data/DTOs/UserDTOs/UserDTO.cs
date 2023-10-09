@@ -29,6 +29,6 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
         public required string Email { get; set; }
 
         [Required]
-        public int RoleName { get; set; } 
+        public string RoleName { get; set; } 
     }
 }

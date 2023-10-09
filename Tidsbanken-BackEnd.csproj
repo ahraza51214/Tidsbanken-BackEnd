@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Tidsbanken_BackEnd</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -12,6 +14,54 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Data\" />
+    <None Remove="Services\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Mappers\" />
+    <None Remove="Data\Entities\" />
+    <None Remove="Data\DTOs\" />
+    <None Remove="Controllers\" />
+    <None Remove="Data\Enums\" />
+    <None Remove="Services\UserService\" />
+    <None Remove="Services\VacationRequestService\" />
+    <None Remove="Services\CommentService\" />
+    <None Remove="Services\IneligiblePeriodService\" />
+    <None Remove="Data\DTOs\UserDTOs\" />
+    <None Remove="Data\DTOs\CommentDTOs\" />
+    <None Remove="Data\DTOs\IneligiblePeriodDTOs\" />
+    <None Remove="Data\DTOs\VacationRequestDTOs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Services\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Data\Entities\" />
+    <Folder Include="Data\DTOs\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Data\Enums\" />
+    <Folder Include="Services\UserService\" />
+    <Folder Include="Services\VacationRequestService\" />
+    <Folder Include="Services\CommentService\" />
+    <Folder Include="Services\IneligiblePeriodService\" />
+    <Folder Include="Data\DTOs\UserDTOs\" />
+    <Folder Include="Data\DTOs\CommentDTOs\" />
+    <Folder Include="Data\DTOs\IneligiblePeriodDTOs\" />
+    <Folder Include="Data\DTOs\VacationRequestDTOs\" />
+  </ItemGroup>
 </Project>

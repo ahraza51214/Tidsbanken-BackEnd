@@ -12,6 +12,6 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public required string RoleName { get; set; }
 
         // Navigation properties
-        public ICollection<User>? Users { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

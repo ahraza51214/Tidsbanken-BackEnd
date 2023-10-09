@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
 {
-	public class UserPostDTO
-	{
+    public class UserPutDTO
+    {
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(100)]
         public required string Username { get; set; }
@@ -16,7 +18,7 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
         [Required]
         [MaxLength(50)]
         public required string LastName { get; set; }
-
+        
         [Required]
         [MaxLength(100)]
         public required string Password { get; set; } // Consider using a more secure method for storing passwords

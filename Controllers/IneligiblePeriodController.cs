@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tidsbanken_BackEnd.Data;
+using Tidsbanken_BackEnd.Data.DTOs.IneligiblePeriodDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Exceptions;
+using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
@@ -14,111 +12,120 @@ namespace Tidsbanken_BackEnd.Controllers
     [ApiController]
     public class IneligiblePeriodController : ControllerBase
     {
-        private readonly TidsbankenDbContext _context;
+        // Private field to store an instance of the ServiceFacade, providing access to IneligiblePeriod-related services.
+        private readonly ServiceFacade _serviceFacade;
 
-        public IneligiblePeriodController(TidsbankenDbContext context)
+        // Private field to store an instance of the auto mapper.
+        private readonly IMapper _mapper;
+
+        // Constructor for the IneligiblePeriodController, which takes the ServiceFacade as a dependency.
+        public IneligiblePeriodController(ServiceFacade serviceFacade, IMapper mapper)
         {
-            _context = context;
+            // Initialize the serviceFacade field with the provided instance of ServiceFacade.
+            _serviceFacade = serviceFacade;
+            // Initialize the _mapper field with the provided instance of Imapper.
+            _mapper = mapper;
         }
 
-        // GET: api/IneligiblePeriod
+
+        /// <summary>
+        /// Get all IneligiblePeriods
+        /// </summary>
+        /// <returns>
+        /// A list of IneligiblePeriods
+        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IneligiblePeriod>>> GetIneligiblePeriods()
+        public async Task<ActionResult<IEnumerable<IneligiblePeriodDTO>>> GetIneligiblePeriods()
         {
-          if (_context.IneligiblePeriods == null)
-          {
-              return NotFound();
-          }
-            return await _context.IneligiblePeriods.ToListAsync();
+            return Ok(_mapper.Map<List<IneligiblePeriodDTO>>(await _serviceFacade._ineligiblePeriodService.GetAllAsync()));
         }
 
-        // GET: api/IneligiblePeriod/5
+
+        /// <summary>
+        /// Retrieves a specific IneligiblePeriod by its unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the IneligiblePeriod.</param>
+        /// <returns>
+        /// A IneligiblePeriod object if found; otherwise, an error message
+        /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IneligiblePeriod>> GetIneligiblePeriod(int id)
+        public async Task<ActionResult<IneligiblePeriodDTO>> GetIneligiblePeriod(int id)
         {
-          if (_context.IneligiblePeriods == null)
-          {
-              return NotFound();
-          }
-            var ineligiblePeriod = await _context.IneligiblePeriods.FindAsync(id);
-
-            if (ineligiblePeriod == null)
+            try
             {
-                return NotFound();
+                return _mapper.Map<IneligiblePeriodDTO>(await _serviceFacade._ineligiblePeriodService.GetByIdAsync(id));
             }
-
-            return ineligiblePeriod;
+            catch (IneligiblePeriodNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // PUT: api/IneligiblePeriod/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutIneligiblePeriod(int id, IneligiblePeriod ineligiblePeriod)
-        {
-            if (id != ineligiblePeriod.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(ineligiblePeriod).State = EntityState.Modified;
+        /// <summary>
+        /// Updates the details of a specific IneligiblePeriod based on the provided User object and unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the IneligiblePeriod to be updated.</param>
+        /// <param name="ineligiblePeriodDTO">The IneligiblePeriod object containing the updated details.</param>
+        /// <returns>
+        /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
+        /// </returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutIneligiblePeriod(int id, IneligiblePeriodDTO ineligiblePeriodDTO)
+        {
+            if (id != ineligiblePeriodDTO.Id)
+            {
+                return BadRequest($"The id {id} given for IneligiblePeriod to be updated does not match the IneligiblePeriod id {ineligiblePeriodDTO.Id} given in the body");
+            }
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _serviceFacade._ineligiblePeriodService.UpdateAsync(_mapper.Map<IneligiblePeriod>(ineligiblePeriodDTO));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (IneligiblePeriodNotFoundException ex)
             {
-                if (!IneligiblePeriodExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(ex.Message);
             }
 
             return NoContent();
         }
 
-        // POST: api/IneligiblePeriod
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<IneligiblePeriod>> PostIneligiblePeriod(IneligiblePeriod ineligiblePeriod)
-        {
-          if (_context.IneligiblePeriods == null)
-          {
-              return Problem("Entity set 'TidsbankenDbContext.IneligiblePeriods'  is null.");
-          }
-            _context.IneligiblePeriods.Add(ineligiblePeriod);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetIneligiblePeriod", new { id = ineligiblePeriod.Id }, ineligiblePeriod);
+        /// <summary>
+        /// Adds a new IneligiblePeriod to the database.
+        /// </summary>
+        /// <param name="ineligiblePeriodTO">The IneligiblePeriod object to be added.</param>
+        /// <returns>
+        /// Returns a CreatedAtAction result, directing to the GetIneligiblePeriod action to retrieve the newly added IneligiblePeriod; otherwise, an error response.
+        /// </returns>
+        [HttpPost]
+        public async Task<ActionResult<IneligiblePeriodDTO>> PostIneligiblePeriod(IneligiblePeriodPostDTO ineligiblePeriodTO)
+        {
+            var newIneligiblePeriod = await _serviceFacade._ineligiblePeriodService.AddAsync(_mapper.Map<IneligiblePeriod>(ineligiblePeriodTO));
+
+            return CreatedAtAction("GetIneligiblePeriod", new { id = newIneligiblePeriod.Id }, _mapper.Map<IneligiblePeriodDTO>(newIneligiblePeriod));
         }
 
-        // DELETE: api/IneligiblePeriod/5
+
+        /// <summary>
+        /// Deletes a specified IneligiblePeriod from the database.
+        /// </summary>
+        /// <param name="id">The unique ID of the IneligiblePeriod to be deleted.</param>
+        /// <returns>
+        /// Returns a NoContent response if deletion is successful; otherwise, a NotFound response with an error message
+        /// </returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIneligiblePeriod(int id)
         {
-            if (_context.IneligiblePeriods == null)
+            try
             {
-                return NotFound();
+                await _serviceFacade._ineligiblePeriodService.DeleteAsync(id);
+                return NoContent();
             }
-            var ineligiblePeriod = await _context.IneligiblePeriods.FindAsync(id);
-            if (ineligiblePeriod == null)
+            catch (IneligiblePeriodNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            _context.IneligiblePeriods.Remove(ineligiblePeriod);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool IneligiblePeriodExists(int id)
-        {
-            return (_context.IneligiblePeriods?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

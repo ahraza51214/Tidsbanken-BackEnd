@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tidsbanken_BackEnd.Data;
+using Tidsbanken_BackEnd.Data.DTOs.CommentDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Exceptions;
+using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
@@ -14,111 +12,119 @@ namespace Tidsbanken_BackEnd.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly TidsbankenDbContext _context;
+        // Private field to store an instance of the ServiceFacade, providing access to Comment-related services.
+        private readonly ServiceFacade _serviceFacade;
 
-        public CommentController(TidsbankenDbContext context)
+        // Private field to store an instance of the auto mapper.
+        private readonly IMapper _mapper;
+
+        // Constructor for the CommentController, which takes the ServiceFacade as a dependency.
+        public CommentController(ServiceFacade serviceFacade, IMapper mapper)
         {
-            _context = context;
+            // Initialize the serviceFacade field with the provided instance of ServiceFacade.
+            _serviceFacade = serviceFacade;
+            // Initialize the _mapper field with the provided instance of Imapper.
+            _mapper = mapper;
         }
 
-        // GET: api/Comment
+
+        /// <summary>
+        /// Get all Comments
+        /// </summary>
+        /// <returns>
+        /// A list of Comments
+        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments()
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
-            return await _context.Comments.ToListAsync();
+            return Ok(_mapper.Map<List<CommentDTO>>(await _serviceFacade._commentService.GetAllAsync()));
         }
 
-        // GET: api/Comment/5
+
+        /// <summary>
+        /// Retrieves a specific Comment by its unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the Comment.</param>
+        /// <returns>
+        /// A Comment object if found; otherwise, an error message
+        /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
+        public async Task<ActionResult<CommentDTO>> GetComment(int id)
         {
-          if (_context.Comments == null)
-          {
-              return NotFound();
-          }
-            var comment = await _context.Comments.FindAsync(id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return comment;
-        }
-
-        // PUT: api/Comment/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
-        {
-            if (id != comment.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(comment).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                return _mapper.Map<CommentDTO>(await _serviceFacade._commentService.GetByIdAsync(id));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (CommentNotFoundException ex)
             {
-                if (!CommentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Updates the details of a specific Comment based on the provided Comment object and unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the Comment to be updated.</param>
+        /// <param name="commentDTO">The Comment object containing the updated details.</param>
+        /// <returns>
+        /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
+        /// </returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutComment(int id, CommentDTO commentDTO)
+        {
+            if (id != commentDTO.Id)
+            {
+                return BadRequest($"The id {id} given for Comment to be updated does not match the Comment id {commentDTO.Id} given in the body");
+            }
+            try
+            {
+                await _serviceFacade._commentService.UpdateAsync(_mapper.Map<Comment>(commentDTO));
+            }
+            catch (CommentNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
             return NoContent();
         }
 
-        // POST: api/Comment
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        /// <summary>
+        /// Adds a new Comment to the database.
+        /// </summary>
+        /// <param name="commentDTO">The Comment object to be added.</param>
+        /// <returns>
+        /// Returns a CreatedAtAction result, directing to the GetComment action to retrieve the newly added comment; otherwise, an error response.
+        /// </returns>
         [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        public async Task<ActionResult<CommentDTO>> PostUser(CommentPostDTO commentDTO)
         {
-          if (_context.Comments == null)
-          {
-              return Problem("Entity set 'TidsbankenDbContext.Comments'  is null.");
-          }
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
+            var newComment = await _serviceFacade._commentService.AddAsync(_mapper.Map<Comment>(commentDTO));
 
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
+            return CreatedAtAction("GetComment", new { id = newComment.Id }, _mapper.Map<CommentDTO>(newComment));
         }
 
-        // DELETE: api/Comment/5
+
+        /// <summary>
+        /// Deletes a specified Comment from the database.
+        /// </summary>
+        /// <param name="id">The unique ID of the Comment to be deleted.</param>
+        /// <returns>
+        /// Returns a NoContent response if deletion is successful; otherwise, a NotFound response with an error message
+        /// </returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Comments == null)
+            try
             {
-                return NotFound();
+                await _serviceFacade._commentService.DeleteAsync(id);
+                return NoContent();
             }
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
+            catch (CommentNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool CommentExists(int id)
-        {
-            return (_context.Comments?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

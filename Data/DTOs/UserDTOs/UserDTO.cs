@@ -1,12 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
 {
 	public class UserDTO
 	{
         public int Id { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public required string Username { get; set; }
 
         [Required]
         [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
@@ -18,10 +21,6 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
 
         [Required]
         [MaxLength(100)]
-        public required string Username { get; set; }
-
-        [Required]
-        [MaxLength(100)]
         public required string Password { get; set; } // Consider using a more secure method for storing passwords
 
         [Required]
@@ -30,7 +29,6 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
         public required string Email { get; set; }
 
         [Required]
-        [ForeignKey("Role")]
-        public int RoleId { get; set; } // Non-nullable for mandatory role associatione
+        public int RoleName { get; set; } 
     }
 }

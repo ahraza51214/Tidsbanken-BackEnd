@@ -16,19 +16,17 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public DateTime EndDate { get; set; }
 
         [Required]
-        public DateTime RequestDate { get; set; }
-
-        public DateTime? ApprovalDate { get; set; }
-
-        [Required]
         public VacationRequestStatus Status { get; set; }
 
         [Required]
-        [ForeignKey("User")]
         public required int UserId { get; set; } // Nullable for optional user
 
-        [ForeignKey("Approver")]
+        [Required]
+        public DateTime RequestDate { get; set; }
+
         public int? ApproverId { get; set; } // Nullable for optional approver
+
+        public DateTime? ApprovalDate { get; set; }
 
         // Navigation properties
         public required User User { get; set; }

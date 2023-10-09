@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Tidsbanken_BackEnd.Data;
+using Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Exceptions;
+using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
@@ -14,111 +12,120 @@ namespace Tidsbanken_BackEnd.Controllers
     [ApiController]
     public class VacationRequestController : ControllerBase
     {
-        private readonly TidsbankenDbContext _context;
+        // Private field to store an instance of the ServiceFacade, providing access to vacationRequest-related services.
+        private readonly ServiceFacade _serviceFacade;
 
-        public VacationRequestController(TidsbankenDbContext context)
+        // Private field to store an instance of the auto mapper.
+        private readonly IMapper _mapper;
+
+        // Constructor for the VacationRequestController, which takes the ServiceFacade as a dependency.
+        public VacationRequestController(ServiceFacade serviceFacade, IMapper mapper)
         {
-            _context = context;
+            // Initialize the serviceFacade field with the provided instance of ServiceFacade.
+            _serviceFacade = serviceFacade;
+            // Initialize the _mapper field with the provided instance of Imapper.
+            _mapper = mapper;
         }
 
-        // GET: api/VacationRequest
+
+        /// <summary>
+        /// Get all VacationRequests
+        /// </summary>
+        /// <returns>
+        /// A list of VacationRequests.
+        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VacationRequest>>> GetVacationRequests()
+        public async Task<ActionResult<IEnumerable<VacationRequestDTO>>> GetUsers()
         {
-          if (_context.VacationRequests == null)
-          {
-              return NotFound();
-          }
-            return await _context.VacationRequests.ToListAsync();
+            return Ok(_mapper.Map<List<VacationRequestDTO>>(await _serviceFacade._vacationRequestService.GetAllAsync()));
         }
 
-        // GET: api/VacationRequest/5
+
+        /// <summary>
+        /// Retrieves a specific VacationRequest by its unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the VacationRequest.</param>
+        /// <returns>
+        /// A VacationRequest object if found; otherwise, an error message.
+        /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<VacationRequest>> GetVacationRequest(int id)
+        public async Task<ActionResult<VacationRequestDTO>> GetVacationRequest(int id)
         {
-          if (_context.VacationRequests == null)
-          {
-              return NotFound();
-          }
-            var vacationRequest = await _context.VacationRequests.FindAsync(id);
-
-            if (vacationRequest == null)
+            try
             {
-                return NotFound();
+                return _mapper.Map<VacationRequestDTO>(await _serviceFacade._vacationRequestService.GetByIdAsync(id));
             }
-
-            return vacationRequest;
+            catch (VacationRequestNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // PUT: api/VacationRequest/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVacationRequest(int id, VacationRequest vacationRequest)
-        {
-            if (id != vacationRequest.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(vacationRequest).State = EntityState.Modified;
+        /// <summary>
+        /// Updates the details of a specific VacationRequest based on the provided VacationRequest object and unique ID.
+        /// </summary>
+        /// <param name="id">The unique ID of the VacationRequest to be updated.</param>
+        /// <param name="vacationRequestDTO">The VacationRequest object containing the updated details.</param>
+        /// <returns>
+        /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
+        /// </returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutVacationRequest(int id, VacationRequestPutDTO vacationRequestDTO)
+        {
+            if (id != vacationRequestDTO.Id)
+            {
+                return BadRequest($"the id {id} given for vacation request to be updated does not match the vacation request id {vacationRequestDTO.Id} given in the body");
+            }
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _serviceFacade._vacationRequestService.UpdateAsync(_mapper.Map<VacationRequest>(vacationRequestDTO));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (VacationRequestNotFoundException ex)
             {
-                if (!VacationRequestExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(ex.Message);
             }
 
             return NoContent();
         }
 
-        // POST: api/VacationRequest
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        /// <summary>
+        /// Adds a new VacationRequest to the database.
+        /// </summary>
+        /// <param name="vacationRequestDTO">The VacationRequest object to be added.</param>
+        /// <returns>
+        /// Returns a CreatedAtAction result, directing to the GetVacationRequest action to retrieve the newly added VacationRequest; otherwise, an error response.
+        /// </returns>
         [HttpPost]
-        public async Task<ActionResult<VacationRequest>> PostVacationRequest(VacationRequest vacationRequest)
+        public async Task<ActionResult<VacationRequestDTO>> PostVacationRequest(VacationRequestPostDTO vacationRequestDTO)
         {
-          if (_context.VacationRequests == null)
-          {
-              return Problem("Entity set 'TidsbankenDbContext.VacationRequests'  is null.");
-          }
-            _context.VacationRequests.Add(vacationRequest);
-            await _context.SaveChangesAsync();
+            var newVacationRequest = await _serviceFacade._vacationRequestService.AddAsync(_mapper.Map<VacationRequest>(vacationRequestDTO));
 
-            return CreatedAtAction("GetVacationRequest", new { id = vacationRequest.Id }, vacationRequest);
+            return CreatedAtAction("GetVacationRequest", new { id = newVacationRequest.Id }, _mapper.Map<VacationRequestDTO>(newVacationRequest));
         }
 
-        // DELETE: api/VacationRequest/5
+
+        /// <summary>
+        /// Deletes a specified VacationRequest from the database.
+        /// </summary>
+        /// <param name="id">The unique ID of the VacationRequest to be deleted.</param>
+        /// <returns>
+        /// Returns a NoContent response if deletion is successful; otherwise, a NotFound response with an error message.
+        /// </returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVacationRequest(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.VacationRequests == null)
+            try
             {
-                return NotFound();
+                await _serviceFacade._vacationRequestService.DeleteAsync(id);
+                return NoContent();
             }
-            var vacationRequest = await _context.VacationRequests.FindAsync(id);
-            if (vacationRequest == null)
+            catch (VacationRequestNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            _context.VacationRequests.Remove(vacationRequest);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool VacationRequestExists(int id)
-        {
-            return (_context.VacationRequests?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

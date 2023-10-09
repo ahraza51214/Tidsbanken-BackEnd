@@ -9,6 +9,10 @@ namespace Tidsbanken_BackEnd.Data.Entities
     {
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public required string Username { get; set; }
+
         [Required] // Indicates that this property must have a non-null value
         [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
         public required string FirstName { get; set; }
@@ -16,10 +20,6 @@ namespace Tidsbanken_BackEnd.Data.Entities
         [Required]
         [MaxLength(50)]
         public required string LastName { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public required string Username { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -39,5 +39,12 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public required ICollection<VacationRequest> VacationRequests { get; set; }
         public required ICollection<IneligiblePeriod> IneligiblePeriods { get; set; }
         public required ICollection<Comment> Comments { get; set; }
+
+        public User()
+        {
+            RoleId = defaultRoleId;
+        }
+        
+        private readonly int defaultRoleId = 1;
     }
 }

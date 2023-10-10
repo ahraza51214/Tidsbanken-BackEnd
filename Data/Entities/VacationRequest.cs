@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.NetworkInformation;
 using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Data.Entities
@@ -34,5 +35,12 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public User? User { get; set; }
         public User? Approver { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+
+
+        public VacationRequest()
+        {
+            // Set the default Status to Pending (index 0)
+            Status = VacationRequestStatus.Pending;
+        }
     }
 }

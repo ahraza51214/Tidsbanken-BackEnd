@@ -17,10 +17,6 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public required DateTime DateCommented { get; set; }
 
         [Required]
-        [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
-        public required string CommentType { get; set; }
-
-        [Required]
         public required VacationRequestStatus StatusAtTimeOfComment { get; set; }
 
         [Required]

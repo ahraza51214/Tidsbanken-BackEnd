@@ -13,7 +13,7 @@ namespace Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs
         public DateTime EndDate { get; set; }
 
         [Required]
-        public VacationRequestStatus Status { get; set; }
+        public required string Status { get; set; }
 
         [Required]
         public required int UserId { get; set; }

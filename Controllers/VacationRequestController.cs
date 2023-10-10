@@ -39,7 +39,7 @@ namespace Tidsbanken_BackEnd.Controllers
         /// A list of VacationRequests.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VacationRequestDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<VacationRequestDTO>>> GetVacationRequests()
         {
             return Ok(_mapper.Map<List<VacationRequestDTO>>(await _serviceFacade._vacationRequestService.GetAllAsync()));
         }

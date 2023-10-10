@@ -12,9 +12,7 @@ namespace Tidsbanken_BackEnd.Mappers
 		public VacationRequestProfile()
 		{
             // CreateMap method to define bidirectional mapping between VacationRequest and VacationRequestDTO
-            CreateMap<VacationRequest, VacationRequestDTO>()
-                .ForMember(vrdto => vrdto.Status, option => option
-                .MapFrom(v => Array.IndexOf(Enum.GetValues(typeof(VacationRequestStatus)), v.Status)));
+            CreateMap<VacationRequest, VacationRequestDTO>().ReverseMap();
 
             // CreateMap method to define bidirectional mapping between VacationRequest and VacationRequestPostDTO
             CreateMap<VacationRequest, VacationRequestPostDTO>().ReverseMap();

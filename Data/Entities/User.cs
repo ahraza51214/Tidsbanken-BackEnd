@@ -42,9 +42,8 @@ namespace Tidsbanken_BackEnd.Data.Entities
 
         public User()
         {
-            RoleId = defaultRoleId;
+            // Set the default Role to Employee (RoleId = 1)
+            RoleId = 1;
         }
-        
-        private readonly int defaultRoleId = 1;
     }
 }

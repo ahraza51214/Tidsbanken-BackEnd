@@ -2,6 +2,7 @@
 using AutoMapper;
 using Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Mappers
 {
@@ -11,7 +12,9 @@ namespace Tidsbanken_BackEnd.Mappers
 		public VacationRequestProfile()
 		{
             // CreateMap method to define bidirectional mapping between VacationRequest and VacationRequestDTO
-            CreateMap<VacationRequest, VacationRequestDTO>().ReverseMap();
+            CreateMap<VacationRequest, VacationRequestDTO>()
+                .ForMember(vrdto => vrdto.Status, option => option
+                .MapFrom(v => Array.IndexOf(Enum.GetValues(typeof(VacationRequestStatus)), v.Status)));
 
             // CreateMap method to define bidirectional mapping between VacationRequest and VacationRequestPostDTO
             CreateMap<VacationRequest, VacationRequestPostDTO>().ReverseMap();

@@ -56,11 +56,23 @@ namespace Tidsbanken_BackEnd.Services.CommentService
 
 
         // Add a new Comment asynchronously.
-        public async Task<Comment> AddAsync(Comment obj)
+        public async Task<Comment> AddAsync(Comment obj, int vacationRequestId)
         {
+            // Retrieve the associated VacationRequest and its current status
+            var vacationRequest = await _context.VacationRequests
+                .Where(vr => vr.Id == vacationRequestId)
+                .FirstOrDefaultAsync();
+
+            if (vacationRequest != null)
+            {
+                // Set the Status property of the Comment based on the VacationRequest's status
+                obj.StatusAtTimeOfComment = vacationRequest.Status;
+            }
+
             // Add the Comment to the database and save changes.
             await _context.Comments.AddAsync(obj);
             await _context.SaveChangesAsync();
+
             return obj;
         }
 
@@ -85,6 +97,13 @@ namespace Tidsbanken_BackEnd.Services.CommentService
         private async Task<bool> CommentExists(int id)
         {
             return await _context.Comments.AnyAsync(c => c.Id == id);
+        }
+
+        // AddAsync method from the ICrudService which is not implemented.
+        // Comment is always made in relation to a VacationRequest
+        public Task<Comment> AddAsync(Comment obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

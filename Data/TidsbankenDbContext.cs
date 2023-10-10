@@ -45,7 +45,7 @@ namespace Tidsbanken_BackEnd.Data
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.VacationRequest)
                 .WithMany(vr => vr.Comments)
-                .HasForeignKey(c => c.RequestId)
+                .HasForeignKey(c => c.VacationRequestId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // VacationRequest one to one VacationRequestStatus : Has
@@ -217,7 +217,7 @@ namespace Tidsbanken_BackEnd.Data
                     Message = "This is a comment by John.",
                     DateCommented = DateTime.Now,
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 1 // VacationRequest ID
+                    VacationRequestId = 1 // VacationRequest ID
                 },
                 new Comment
                 {
@@ -225,7 +225,7 @@ namespace Tidsbanken_BackEnd.Data
                     Message = "This is a comment by Manager.",
                     DateCommented = DateTime.Now,
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
-                    RequestId = 2 // VacationRequest ID
+                    VacationRequestId = 2 // VacationRequest ID
                 },
                 new Comment
                 {
@@ -233,7 +233,7 @@ namespace Tidsbanken_BackEnd.Data
                     Message = "Another comment by Manager.",
                     DateCommented = DateTime.Now,
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 3 // VacationRequest ID
+                    VacationRequestId = 3 // VacationRequest ID
                 },
                 new Comment
                 {
@@ -241,7 +241,7 @@ namespace Tidsbanken_BackEnd.Data
                     Message = "A comment by Admin.",
                     DateCommented = DateTime.Now,
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
-                    RequestId = 4 // VacationRequest ID
+                    VacationRequestId = 4 // VacationRequest ID
                 },
                 new Comment
                 {
@@ -249,7 +249,7 @@ namespace Tidsbanken_BackEnd.Data
                     Message = "A comment by Jane.",
                     DateCommented = DateTime.Now,
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 5 // VacationRequest ID
+                    VacationRequestId = 5 // VacationRequest ID
                 }
             );
         }

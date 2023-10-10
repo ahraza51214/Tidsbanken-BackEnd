@@ -14,7 +14,8 @@ namespace Tidsbanken_BackEnd.Mappers
             CreateMap<User, UserDTO>()
                 .ForMember(udto => udto.RoleName, options => options
                 .MapFrom(u => u.Role.RoleName)
-                );
+                
+                ).ReverseMap();
 
             // CreateMap method to define bidirectional mapping between User and UserPostDTO
             CreateMap<User, UserPostDTO>().ReverseMap();

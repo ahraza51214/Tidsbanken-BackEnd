@@ -38,20 +38,20 @@ namespace Tidsbanken_BackEnd.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
-
                     b.Property<int>("StatusAtTimeOfComment")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("VacationRequestId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("RequestId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("VacationRequestId");
 
                     b.ToTable("Comments");
 
@@ -59,42 +59,42 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710),
+                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6890),
                             Message = "This is a comment by John.",
-                            RequestId = 1,
-                            StatusAtTimeOfComment = 0
+                            StatusAtTimeOfComment = 0,
+                            VacationRequestId = 1
                         },
                         new
                         {
                             Id = 2,
-                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710),
+                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900),
                             Message = "This is a comment by Manager.",
-                            RequestId = 2,
-                            StatusAtTimeOfComment = 2
+                            StatusAtTimeOfComment = 2,
+                            VacationRequestId = 2
                         },
                         new
                         {
                             Id = 3,
-                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
+                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900),
                             Message = "Another comment by Manager.",
-                            RequestId = 3,
-                            StatusAtTimeOfComment = 0
+                            StatusAtTimeOfComment = 0,
+                            VacationRequestId = 3
                         },
                         new
                         {
                             Id = 4,
-                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
+                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910),
                             Message = "A comment by Admin.",
-                            RequestId = 4,
-                            StatusAtTimeOfComment = 2
+                            StatusAtTimeOfComment = 2,
+                            VacationRequestId = 4
                         },
                         new
                         {
                             Id = 5,
-                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
+                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910),
                             Message = "A comment by Jane.",
-                            RequestId = 5,
-                            StatusAtTimeOfComment = 0
+                            StatusAtTimeOfComment = 0,
+                            VacationRequestId = 5
                         });
                 });
 
@@ -341,7 +341,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 1,
                             EndDate = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6600),
+                            RequestDate = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6780),
                             StartDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 1
@@ -350,7 +350,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 2,
                             EndDate = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6610),
+                            RequestDate = new DateTime(2023, 11, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6790),
                             StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
                             UserId = 2
@@ -359,7 +359,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 3,
                             EndDate = new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 12, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620),
+                            RequestDate = new DateTime(2023, 12, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6800),
                             StartDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 3
@@ -368,7 +368,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 4,
                             EndDate = new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 25, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620),
+                            RequestDate = new DateTime(2023, 11, 25, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6810),
                             StartDate = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
                             UserId = 4
@@ -377,7 +377,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 5,
                             EndDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2024, 1, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6630),
+                            RequestDate = new DateTime(2024, 1, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6820),
                             StartDate = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 5
@@ -386,15 +386,15 @@ namespace Tidsbanken_BackEnd.Migrations
 
             modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.Comment", b =>
                 {
-                    b.HasOne("Tidsbanken_BackEnd.Data.Entities.VacationRequest", "VacationRequest")
-                        .WithMany("Comments")
-                        .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Tidsbanken_BackEnd.Data.Entities.User", null)
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
+
+                    b.HasOne("Tidsbanken_BackEnd.Data.Entities.VacationRequest", "VacationRequest")
+                        .WithMany("Comments")
+                        .HasForeignKey("VacationRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("VacationRequest");
                 });

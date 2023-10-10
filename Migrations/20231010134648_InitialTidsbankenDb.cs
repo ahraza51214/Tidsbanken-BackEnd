@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tidsbanken_BackEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialTidsbankenDb1 : Migration
+    public partial class InitialTidsbankenDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -110,7 +110,7 @@ namespace Tidsbanken_BackEnd.Migrations
                     Message = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     DateCommented = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusAtTimeOfComment = table.Column<int>(type: "int", nullable: false),
-                    RequestId = table.Column<int>(type: "int", nullable: false),
+                    VacationRequestId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -122,8 +122,8 @@ namespace Tidsbanken_BackEnd.Migrations
                         principalTable: "Users",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Comments_VacationRequests_RequestId",
-                        column: x => x.RequestId,
+                        name: "FK_Comments_VacationRequests_VacationRequestId",
+                        column: x => x.VacationRequestId,
                         principalTable: "VacationRequests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -168,34 +168,34 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "ApprovalDate", "ApproverId", "EndDate", "RequestDate", "StartDate", "Status", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, null, new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6600), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 1 },
-                    { 2, null, null, new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6610), new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 2 },
-                    { 3, null, null, new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620), new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 3 },
-                    { 4, null, null, new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 25, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620), new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 4 },
-                    { 5, null, null, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6630), new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 5 }
+                    { 1, null, null, new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6780), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 1 },
+                    { 2, null, null, new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6790), new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 2 },
+                    { 3, null, null, new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6800), new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 3 },
+                    { 4, null, null, new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 25, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6810), new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 4 },
+                    { 5, null, null, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6820), new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 5 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Comments",
-                columns: new[] { "Id", "DateCommented", "Message", "RequestId", "StatusAtTimeOfComment", "UserId" },
+                columns: new[] { "Id", "DateCommented", "Message", "StatusAtTimeOfComment", "UserId", "VacationRequestId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710), "This is a comment by John.", 1, 0, null },
-                    { 2, new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710), "This is a comment by Manager.", 2, 2, null },
-                    { 3, new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720), "Another comment by Manager.", 3, 0, null },
-                    { 4, new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720), "A comment by Admin.", 4, 2, null },
-                    { 5, new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720), "A comment by Jane.", 5, 0, null }
+                    { 1, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6890), "This is a comment by John.", 0, null, 1 },
+                    { 2, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900), "This is a comment by Manager.", 2, null, 2 },
+                    { 3, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900), "Another comment by Manager.", 0, null, 3 },
+                    { 4, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910), "A comment by Admin.", 2, null, 4 },
+                    { 5, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910), "A comment by Jane.", 0, null, 5 }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_RequestId",
-                table: "Comments",
-                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
                 table: "Comments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_VacationRequestId",
+                table: "Comments",
+                column: "VacationRequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IneligiblePeriods_UserId",

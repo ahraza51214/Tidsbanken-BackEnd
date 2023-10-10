@@ -19,6 +19,6 @@ namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
         public required string StatusAtTimeOfComment { get; set; }
 
         [Required]
-        public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
+        public required int VacationRequestId { get; set; } // Non-nullable for mandatory association with a vacation request
     }
 }

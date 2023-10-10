@@ -98,13 +98,14 @@ namespace Tidsbanken_BackEnd.Controllers
         /// Adds a new Comment to the database.
         /// </summary>
         /// <param name="commentDTO">The Comment object to be added.</param>
+        /// <param name="vacationRequestId">The Id of the related VacationRequest object.</param>
         /// <returns>
         /// Returns a CreatedAtAction result, directing to the GetComment action to retrieve the newly added comment; otherwise, an error response.
         /// </returns>
         [HttpPost]
-        public async Task<ActionResult<CommentDTO>> PostUser(CommentPostDTO commentDTO)
+        public async Task<ActionResult<CommentDTO>> PostComment(CommentPostDTO commentDTO, int vacationRequestId)
         {
-            var newComment = await _serviceFacade._commentService.AddAsync(_mapper.Map<Comment>(commentDTO));
+            var newComment = await _serviceFacade._commentService.AddAsync(_mapper.Map<Comment>(commentDTO), vacationRequestId);
 
             return CreatedAtAction("GetComment", new { id = newComment.Id }, _mapper.Map<CommentDTO>(newComment));
         }

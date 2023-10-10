@@ -17,6 +17,6 @@ namespace Tidsbanken_BackEnd.Data.DTOs.IneligiblePeriodDTOs
         public string? Description { get; set; } // Nullable if optional
 
         [Required]
-        public int UserId { get; set; }
+        public string ManagerName { get; set; }
     }
 }

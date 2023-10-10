@@ -21,7 +21,7 @@ namespace Tidsbanken_BackEnd.Data.Entities
 
         [Required]
         [ForeignKey("VacationRequest")]
-        public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
+        public required int VacationRequestId { get; set; } // Non-nullable for mandatory association with a vacation request
 
         // Navigation properties
         public VacationRequest? VacationRequest { get; set; }

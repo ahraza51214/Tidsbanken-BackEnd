@@ -12,7 +12,7 @@ using Tidsbanken_BackEnd.Data;
 namespace Tidsbanken_BackEnd.Migrations
 {
     [DbContext(typeof(TidsbankenDbContext))]
-    [Migration("20231009091149_InitialTidsbankenDb1")]
+    [Migration("20231010120437_InitialTidsbankenDb1")]
     partial class InitialTidsbankenDb1
     {
         /// <inheritdoc />
@@ -32,11 +32,6 @@ namespace Tidsbanken_BackEnd.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CommentType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("DateCommented")
                         .HasColumnType("datetime2");
@@ -67,8 +62,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            CommentType = "General",
-                            DateCommented = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1510),
+                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710),
                             Message = "This is a comment by John.",
                             RequestId = 1,
                             StatusAtTimeOfComment = 0
@@ -76,8 +70,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 2,
-                            CommentType = "General",
-                            DateCommented = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1510),
+                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6710),
                             Message = "This is a comment by Manager.",
                             RequestId = 2,
                             StatusAtTimeOfComment = 2
@@ -85,8 +78,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 3,
-                            CommentType = "General",
-                            DateCommented = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1520),
+                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
                             Message = "Another comment by Manager.",
                             RequestId = 3,
                             StatusAtTimeOfComment = 0
@@ -94,8 +86,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 4,
-                            CommentType = "General",
-                            DateCommented = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1520),
+                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
                             Message = "A comment by Admin.",
                             RequestId = 4,
                             StatusAtTimeOfComment = 2
@@ -103,8 +94,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 5,
-                            CommentType = "General",
-                            DateCommented = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1520),
+                            DateCommented = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6720),
                             Message = "A comment by Jane.",
                             RequestId = 5,
                             StatusAtTimeOfComment = 0
@@ -143,40 +133,40 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 1,
                             Description = "Vacation blackout period 1",
-                            EndDate = new DateTime(2023, 12, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 3
                         },
                         new
                         {
                             Id = 2,
                             Description = "Vacation blackout period 2",
-                            EndDate = new DateTime(2024, 3, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 4
                         },
                         new
                         {
                             Id = 3,
                             Description = "Vacation blackout period 3",
-                            EndDate = new DateTime(2024, 6, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 5, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 4
                         },
                         new
                         {
                             Id = 4,
                             Description = "Vacation blackout period 4",
-                            EndDate = new DateTime(2023, 12, 29, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 12, 19, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 3
                         },
                         new
                         {
                             Id = 5,
                             Description = "Vacation blackout period 5",
-                            EndDate = new DateTime(2023, 11, 14, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 11, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 2
                         });
                 });
@@ -353,45 +343,45 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2023, 10, 14, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 10, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1390),
-                            StartDate = new DateTime(2023, 10, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 10, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6600),
+                            StartDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2023, 11, 19, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1400),
-                            StartDate = new DateTime(2023, 11, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 11, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6610),
+                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
-                            EndDate = new DateTime(2023, 12, 16, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 12, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1410),
-                            StartDate = new DateTime(2023, 12, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 12, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620),
+                            StartDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 3
                         },
                         new
                         {
                             Id = 4,
-                            EndDate = new DateTime(2023, 11, 29, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 24, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1420),
-                            StartDate = new DateTime(2023, 11, 24, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 11, 25, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6620),
+                            StartDate = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
                             UserId = 4
                         },
                         new
                         {
                             Id = 5,
-                            EndDate = new DateTime(2024, 1, 14, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2024, 1, 9, 11, 11, 48, 971, DateTimeKind.Local).AddTicks(1430),
-                            StartDate = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2024, 1, 10, 14, 4, 37, 134, DateTimeKind.Local).AddTicks(6630),
+                            StartDate = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
                             UserId = 5
                         });

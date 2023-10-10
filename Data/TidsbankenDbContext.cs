@@ -216,7 +216,6 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 1,
                     Message = "This is a comment by John.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
                     RequestId = 1 // VacationRequest ID
                 },
@@ -225,7 +224,6 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 2,
                     Message = "This is a comment by Manager.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
                     RequestId = 2 // VacationRequest ID
                 },
@@ -234,7 +232,6 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 3,
                     Message = "Another comment by Manager.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
                     RequestId = 3 // VacationRequest ID
                 },
@@ -243,7 +240,6 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 4,
                     Message = "A comment by Admin.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
                     RequestId = 4 // VacationRequest ID
                 },
@@ -252,7 +248,6 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 5,
                     Message = "A comment by Jane.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
                     RequestId = 5 // VacationRequest ID
                 }

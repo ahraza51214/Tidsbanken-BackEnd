@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using Microsoft.EntityFrameworkCore;
 using Tidsbanken_BackEnd.Data;
 using Tidsbanken_BackEnd.Data.Entities;
@@ -17,34 +18,33 @@ namespace Tidsbanken_BackEnd.Services.CommentService
             _context = context;
         }
 
+
         // Get all Comment asynchronously.
-        public async Task<IEnumerable<Comment>> GetAllAsync()
+        public async Task<IEnumerable<Comment>> GetAllAsync(int vacationRequestId)
         {
-            return await _context.Comments.ToListAsync();
-        }
-
-
-        // Get a Comment by its ID asynchronously.
-        public async Task<Comment?> GetByIdAsync(int id)
-        {
-            var comment = await _context.Comments.Where(c => c.Id == id).FirstAsync();
-            if (comment is null)
-            {
-                // Throw an exception if the Comment with the specified ID is not found.
-                throw new CommentNotFoundException(id);
-            }
-            return comment;
+            return await _context.Comments.Where(c => c.VacationRequestId == vacationRequestId).Include(c => c.VacationRequest).ThenInclude(v => v.User).ToListAsync();
         }
 
 
         // Update a Comment asynchronously.
-        public async Task<Comment> UpdateAsync(Comment obj)
+        public async Task<Comment> UpdateAsync(Comment obj, int vacationRequestId)
         {
             // Check if the Comment with the given ID exists.
             if (!await CommentExists(obj.Id))
             {
                 // Throw an Exception if the Comment is not found.
                 throw new CommentNotFoundException(obj.Id);
+            }
+
+            // Retrieve the associated VacationRequest and its current status
+            var vacationRequest = await _context.VacationRequests
+                .Where(vr => vr.Id == vacationRequestId)
+                .FirstOrDefaultAsync();
+
+            if (vacationRequest != null)
+            {
+                // Set the Status property of the Comment based on the VacationRequest's status
+                obj.StatusAtTimeOfComment = vacationRequest.Status;
             }
 
             // Mark the Comment entity as modified and save changes to the database.
@@ -78,7 +78,7 @@ namespace Tidsbanken_BackEnd.Services.CommentService
 
 
         // Delete a Comment by ID asynchronously.
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int vacationRequestId)
         {
             // Check if the Comment with the given ID exists.
             if (!await CommentExists(id))
@@ -86,8 +86,14 @@ namespace Tidsbanken_BackEnd.Services.CommentService
                 // Throw an exception if the Comment is not found.
                 throw new CommentNotFoundException(id);
             }
+
             // Find and remove the Comment from the database.
             var comment = await _context.Comments.FindAsync(id);
+
+            if (comment.VacationRequestId != vacationRequestId)
+            {
+                throw new Exception($"Comment with ID {id} is not associated with VacationRequest ID {vacationRequestId}.");
+            }
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
         }
@@ -97,13 +103,6 @@ namespace Tidsbanken_BackEnd.Services.CommentService
         private async Task<bool> CommentExists(int id)
         {
             return await _context.Comments.AnyAsync(c => c.Id == id);
-        }
-
-        // AddAsync method from the ICrudService which is not implemented.
-        // Comment is always made in relation to a VacationRequest
-        public Task<Comment> AddAsync(Comment obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

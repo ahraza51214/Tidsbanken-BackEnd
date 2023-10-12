@@ -11,7 +11,10 @@ namespace Tidsbanken_BackEnd.Mappers
 		public IneligiblePeriodProfile()
 		{
             // CreateMap method to define bidirectional mapping between IneligiblePeriod and IneligiblePeriodDTO
-            CreateMap<IneligiblePeriod, IneligiblePeriodDTO>().ReverseMap();
+            CreateMap<IneligiblePeriod, IneligiblePeriodDTO>()
+                .ForMember(idto => idto.ManagerName, option => option
+                .MapFrom(i => i.User.FirstName))
+                .ReverseMap();
 
             // CreateMap method to define bidirectional mapping between IneligiblePeriod and IneligiblePeriodPostDTO
             CreateMap<IneligiblePeriod, IneligiblePeriodPostDTO>().ReverseMap();

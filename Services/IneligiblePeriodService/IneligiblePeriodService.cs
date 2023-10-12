@@ -20,7 +20,7 @@ namespace Tidsbanken_BackEnd.Services.IneligiblePeriodService
         // Get all IneligiblePeriod asynchronously.
         public async Task<IEnumerable<IneligiblePeriod>> GetAllAsync()
         {
-            return await _context.IneligiblePeriods.ToListAsync();
+            return await _context.IneligiblePeriods.Include(i => i.User).ToListAsync();
         }
 
 

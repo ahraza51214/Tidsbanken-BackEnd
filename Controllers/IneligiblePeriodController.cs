@@ -9,7 +9,7 @@ using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/IneligiblePeriods")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]

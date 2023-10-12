@@ -9,7 +9,7 @@ using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/VacationRequests")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -38,33 +38,22 @@ namespace Tidsbanken_BackEnd.Controllers
         /// <returns>
         /// A list of Comments
         /// </returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments()
-        {
-            return Ok(_mapper.Map<List<CommentDTO>>(await _serviceFacade._commentService.GetAllAsync()));
-        }
-
-
-        /// <summary>
-        /// Retrieves a specific Comment by its unique ID.
-        /// </summary>
-        /// <param name="id">The unique ID of the Comment.</param>
-        /// <returns>
-        /// A Comment object if found; otherwise, an error message
-        /// </returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CommentDTO>> GetComment(int id)
+        [HttpGet("{vacationRequestId}/Comments")]
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments(int vacationRequestId)
         {
             try
             {
-                return _mapper.Map<CommentDTO>(await _serviceFacade._commentService.GetByIdAsync(id));
+                return Ok(_mapper.Map<List<CommentDTO>>(await _serviceFacade._commentService.GetAllAsync(vacationRequestId)));
+            }
+            catch (VacationRequestNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (CommentNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
         }
-
 
         /// <summary>
         /// Updates the details of a specific Comment based on the provided Comment object and unique ID.
@@ -74,8 +63,8 @@ namespace Tidsbanken_BackEnd.Controllers
         /// <returns>
         /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
         /// </returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, CommentDTO commentDTO)
+        [HttpPut("{vacationRequestId}/Comments/{id}")]
+        public async Task<IActionResult> PutComment(int id, CommentDTO commentDTO, int vacationRequestId)
         {
             if (id != commentDTO.Id)
             {
@@ -83,7 +72,7 @@ namespace Tidsbanken_BackEnd.Controllers
             }
             try
             {
-                await _serviceFacade._commentService.UpdateAsync(_mapper.Map<Comment>(commentDTO));
+                await _serviceFacade._commentService.UpdateAsync(_mapper.Map<Comment>(commentDTO), vacationRequestId);
             }
             catch (CommentNotFoundException ex)
             {
@@ -102,7 +91,7 @@ namespace Tidsbanken_BackEnd.Controllers
         /// <returns>
         /// Returns a CreatedAtAction result, directing to the GetComment action to retrieve the newly added comment; otherwise, an error response.
         /// </returns>
-        [HttpPost]
+        [HttpPost("{vacationRequestId}/Comments")]
         public async Task<ActionResult<CommentDTO>> PostComment(CommentPostDTO commentDTO, int vacationRequestId)
         {
             var newComment = await _serviceFacade._commentService.AddAsync(_mapper.Map<Comment>(commentDTO), vacationRequestId);
@@ -118,15 +107,19 @@ namespace Tidsbanken_BackEnd.Controllers
         /// <returns>
         /// Returns a NoContent response if deletion is successful; otherwise, a NotFound response with an error message
         /// </returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{vacationRequestId}/Comments/{id}")]
+        public async Task<IActionResult> DeleteUser(int id, int vacationRequestId)
         {
             try
             {
-                await _serviceFacade._commentService.DeleteAsync(id);
+                await _serviceFacade._commentService.DeleteAsync(id, vacationRequestId);
                 return NoContent();
             }
             catch (CommentNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }

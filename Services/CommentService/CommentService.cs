@@ -25,8 +25,9 @@ namespace Tidsbanken_BackEnd.Services.CommentService
             // Check if the associated VacationRequest exists
             var vacationRequest = await _context.VacationRequests
                 .Where(v => v.Id == vacationRequestId)
+                .Include(v => v.User)
                 .Include(v => v.Comments)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
             
             if (vacationRequest == null)
             {
@@ -34,18 +35,13 @@ namespace Tidsbanken_BackEnd.Services.CommentService
                 throw new VacationRequestNotFoundException(vacationRequestId);
             }
 
-            else if (vacationRequest.Comments == null)
+            else if (vacationRequest.Comments == null || !vacationRequest.Comments.Any())
             {
-                // Throw VacationRequestNotFoundException if it doesn't exist
+                // Throw new exception the vacation request with the given Id does not contain any comments
                 throw new Exception($"Vacation Request with id {vacationRequestId} does not have any comments");
             }
-
-            // Query for comments based on the provided vacationRequestId
-            return await _context.Comments
-                .Where(c => c.VacationRequestId == vacationRequestId)
-                .Include(c => c.VacationRequest)
-                .ThenInclude(v => v.User)
-                .ToListAsync();
+            // Returning the comments based on the provided vacationRequestId
+            return vacationRequest.Comments.ToList();
         }
 
 
@@ -55,25 +51,21 @@ namespace Tidsbanken_BackEnd.Services.CommentService
             // Check if the Comment with the given ID exists.
             if (!await CommentExists(id))
             {
-                // Throw an Exception if the Comment is not found.
+                // Throw a CommentNotFoundException if the Comment is not found.
                 throw new CommentNotFoundException(id);
             }
 
-            // Retrieve the associated VacationRequest
-            var vacationRequest = await _context.VacationRequests
-                .Where(vr => vr.Id == vacationRequestId)
-                .FirstOrDefaultAsync();
-
-            if (vacationRequest == null)
-            {
-                throw new VacationRequestNotFoundException(vacationRequestId);
-            }
-
             var comment = await _context.Comments
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == id && c.VacationRequestId == vacationRequestId)
                 .Include(c => c.VacationRequest)
                 .ThenInclude(v => v.User)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+
+            if (comment == null)
+            {
+                // Throw a VacationRequestNotFoundException if the associated VacationRequest is not found.
+                throw new VacationRequestNotFoundException(vacationRequestId);
+            }
 
             return comment;
         }
@@ -91,7 +83,7 @@ namespace Tidsbanken_BackEnd.Services.CommentService
 
             // Retrieve the associated VacationRequest and its current status
             var vacationRequest = await _context.VacationRequests
-                .Where(vr => vr.Id == vacationRequestId)
+                .Where(v => v.Id == vacationRequestId)
                 .FirstOrDefaultAsync();
 
             if (vacationRequest == null)
@@ -114,7 +106,7 @@ namespace Tidsbanken_BackEnd.Services.CommentService
         {
             // Retrieve the associated VacationRequest and its current status
             var vacationRequest = await _context.VacationRequests
-                .Where(vr => vr.Id == vacationRequestId)
+                .Where(v => v.Id == vacationRequestId)
                 .FirstOrDefaultAsync();
 
             if (vacationRequest == null)
@@ -122,7 +114,7 @@ namespace Tidsbanken_BackEnd.Services.CommentService
                 throw new VacationRequestNotFoundException(vacationRequestId);
             }
 
-            // Set the Status and VacationRequestId property of the Comment based on the VacationRequest's status and id
+            // Set the Status and VacationRequestId property of the Comment object based on the VacationRequest's status and id
             obj.StatusAtTimeOfComment = vacationRequest.Status;
             obj.VacationRequestId = vacationRequest.Id;
             // Add the Comment to the database and save changes.

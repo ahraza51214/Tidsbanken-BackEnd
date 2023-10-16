@@ -10,6 +10,9 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public int Id { get; set; }
 
         [Required]
+        public VacationType VacationType { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
 
         [Required]
@@ -34,5 +37,12 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public User? User { get; set; }
         public User? Approver { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+
+
+        public VacationRequest()
+        {
+            // Set the default Status to Pending when a vacation request is craeted (index 0)
+            Status = VacationRequestStatus.Pending;
+        }
     }
 }

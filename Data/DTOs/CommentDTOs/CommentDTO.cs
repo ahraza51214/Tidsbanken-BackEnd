@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
@@ -16,13 +17,12 @@ namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
         public required DateTime DateCommented { get; set; }
 
         [Required]
-        [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
-        public required string CommentType { get; set; }
+        public required string StatusAtTimeOfComment { get; set; }
 
         [Required]
-        public required VacationRequestStatus StatusAtTimeOfComment { get; set; }
+        public required int VacationRequestId { get; set; } // Non-nullable for mandatory association with a vacation request
 
         [Required]
-        public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
+        public required string UserName { get; set; } // Non-nullable for mandatory association with a vacation request
     }
 }

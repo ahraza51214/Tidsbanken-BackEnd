@@ -12,15 +12,5 @@ namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
 
         [Required]
         public required DateTime DateCommented { get; set; }
-
-        [Required]
-        [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
-        public required string CommentType { get; set; }
-
-        [Required]
-        public required VacationRequestStatus StatusAtTimeOfComment { get; set; }
-
-        [Required]
-        public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using AutoMapper;
 using Tidsbanken_BackEnd.Data.DTOs.CommentDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
@@ -11,7 +11,10 @@ namespace Tidsbanken_BackEnd.Mappers
 		public CommentProfile()
 		{
             // CreateMap method to define bidirectional mapping between Comment and CommentPostDTO
-            CreateMap<Comment, CommentDTO>().ReverseMap();
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(cdto => cdto.UserName, option => option
+                .MapFrom(c => c.VacationRequest.User.FirstName))
+                .ReverseMap();
 
             // CreateMap method to define bidirectional mapping between Comment and CommentPostDTO
             CreateMap<Comment, CommentPostDTO>().ReverseMap();

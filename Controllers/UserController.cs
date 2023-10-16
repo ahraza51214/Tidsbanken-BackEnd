@@ -7,10 +7,9 @@ using Tidsbanken_BackEnd.Data.Entities;
 using Tidsbanken_BackEnd.Exceptions;
 using Tidsbanken_BackEnd.Services;
 
-
 namespace Tidsbanken_BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/Users")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]

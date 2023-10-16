@@ -9,7 +9,7 @@ using Tidsbanken_BackEnd.Services;
 
 namespace Tidsbanken_BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/IneligiblePeriods")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -75,7 +75,7 @@ namespace Tidsbanken_BackEnd.Controllers
         /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
         /// </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutIneligiblePeriod(int id, IneligiblePeriodDTO ineligiblePeriodDTO)
+        public async Task<IActionResult> PutIneligiblePeriod(int id, IneligiblePeriodPutDTO ineligiblePeriodDTO)
         {
             if (id != ineligiblePeriodDTO.Id)
             {

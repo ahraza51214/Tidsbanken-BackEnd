@@ -45,12 +45,17 @@ namespace Tidsbanken_BackEnd.Data
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.VacationRequest)
                 .WithMany(vr => vr.Comments)
-                .HasForeignKey(c => c.RequestId)
+                .HasForeignKey(c => c.VacationRequestId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // VacationRequest one to one VacationRequestStatus : Has
             modelBuilder.Entity<VacationRequest>()
                 .Property(vr => vr.Status)
+                .HasConversion<String>();
+
+            // VacationRequest one to one VacationType : Has
+            modelBuilder.Entity<VacationRequest>()
+                .Property(vr => vr.VacationType)
                 .HasConversion<String>();
 
 
@@ -121,6 +126,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 1,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date,
                     EndDate = DateTime.Now.Date.AddDays(5),
                     Status = VacationRequestStatus.Pending,
@@ -130,6 +136,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 2,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(1),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(10),
                     Status = VacationRequestStatus.Approved,
@@ -139,6 +146,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 3,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(2),
                     EndDate = DateTime.Now.Date.AddMonths(2).AddDays(7),
                     Status = VacationRequestStatus.Pending,
@@ -148,6 +156,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 4,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(1).AddDays(15),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(20),
                     Status = VacationRequestStatus.Approved,
@@ -157,6 +166,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 5,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(3),
                     EndDate = DateTime.Now.Date.AddMonths(3).AddDays(5),
                     Status = VacationRequestStatus.Pending,
@@ -216,45 +226,40 @@ namespace Tidsbanken_BackEnd.Data
                     Id = 1,
                     Message = "This is a comment by John.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 1 // VacationRequest ID
+                    VacationRequestId = 1 // VacationRequest ID
                 },
                 new Comment
                 {
                     Id = 2,
                     Message = "This is a comment by Manager.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
-                    RequestId = 2 // VacationRequest ID
+                    VacationRequestId = 2 // VacationRequest ID
                 },
                 new Comment
                 {
                     Id = 3,
                     Message = "Another comment by Manager.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 3 // VacationRequest ID
+                    VacationRequestId = 3 // VacationRequest ID
                 },
                 new Comment
                 {
                     Id = 4,
                     Message = "A comment by Admin.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Approved,
-                    RequestId = 4 // VacationRequest ID
+                    VacationRequestId = 4 // VacationRequest ID
                 },
                 new Comment
                 {
                     Id = 5,
                     Message = "A comment by Jane.",
                     DateCommented = DateTime.Now,
-                    CommentType = "General",
                     StatusAtTimeOfComment = VacationRequestStatus.Pending,
-                    RequestId = 5 // VacationRequest ID
+                    VacationRequestId = 5 // VacationRequest ID
                 }
             );
         }

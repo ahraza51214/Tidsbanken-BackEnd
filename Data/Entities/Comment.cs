@@ -17,15 +17,11 @@ namespace Tidsbanken_BackEnd.Data.Entities
         public required DateTime DateCommented { get; set; }
 
         [Required]
-        [MaxLength(50)] // Limits the maximum length of the string property to 50 characters
-        public required string CommentType { get; set; }
-
-        [Required]
         public required VacationRequestStatus StatusAtTimeOfComment { get; set; }
 
         [Required]
         [ForeignKey("VacationRequest")]
-        public required int RequestId { get; set; } // Non-nullable for mandatory association with a vacation request
+        public required int VacationRequestId { get; set; } // Non-nullable for mandatory association with a vacation request
 
         // Navigation properties
         public VacationRequest? VacationRequest { get; set; }

@@ -28,36 +28,20 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
+        Title = "Tidsbanken Vacation Management API",
         Version = "v1",
-        Title = "Tidsbanken API",
-        Description = "Tidsbanken API serves as a platform for storing and managing vacation request related data. " +
-        "Utilizing ASP.NET Core with Entity Framework Core and SQL Server, " +
-        "the API encapsulates functionalities for user, ineligible period, comment and vacation request. It allows users to: \n\n" +
-
-            "- **Create and Maintain Users**: " +
-                "Store basic information such as name, username, password, and E-mail for each user. \n\n" +
-
-            "- **Catalog Movies**: Organize movies with essential details including title, genre, release year, " +
-                "director, poster image, and trailer link. \n\n" +
-
-            "- **Organize Franchises**: Manage franchises, each potentially encompassing multiple movies, " +
-                "with an associated description. \n\n" +
-
-        "Key API functionalities: \n\n" +
-
-            "- **CRUD Operations**: Full Create, Read, Update, and Delete functionalities for movies, " +
-                "characters, and franchises. \n\n" +
-
-            "- **Relational Updates**: Specifically tailored endpoints for updating character associations " +
-                "in movies and movie associations in franchises. \n\n" +
-
-            "- **Reporting**: Generate reports to fetch movies in a franchise, characters in a movie, " +
-                "and characters within a particular franchise. \n\n" +
-
-        "This API uses DTOs to ensure a decoupled client experience and to safeguard against over - posting. " +
-        "It also ensures documentation clarity through Swagger / OpenAPI annotations. \n\n" +
-
-        "**Note**: Ensure to adhere to the documentation when interacting with the endpoints and follow the business rules to maintain the integrity of the data relationships."
+        Description = "Welcome to the Tidsbanken Vacation Management API!\n\n" +
+                       "This API provides a comprehensive solution to address challenges faced by employees when managing vacation requests and coordinating periods of absence.\n" +
+                       "In the past, employees encountered difficulties in effective communication and planning, leading to scheduling conflicts and resource allocation problems during vacation periods.\n\n" +
+                       "Key Features and Benefits:\n" +
+                       "- Streamlined Vacation Request Workflow: Submit, review, and approve vacation requests with ease.\n" +
+                       "- Shared Vacation Calendar: View colleagues' approved vacation days for better coordination.\n" +
+                       "- Enhanced Communication: Bridge communication gaps and improve interactions amongst employees and managers for vacation requests.\n" +
+                       "- Empower Managers: Managers can make informed decisions regarding resource allocation.\n\n" +
+                       "Our goal is to establish a cohesive and productive work environment that benefits both employees and the organization. \n" +
+                       "This API plays a vital role in achieving this goal by simplifying vacation management, optimizing team coordination, and enhancing overall efficiency.\n\n" +
+                       "For more details and usage guidelines, please refer to the API documentation on https://github.com/ahraza51214/Tidsbanken-BackEnd.",
+        TermsOfService = new Uri("https://example.com/terms"),
     });
     // using System.Reflection;
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

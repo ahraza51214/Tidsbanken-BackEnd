@@ -2,6 +2,7 @@
 using AutoMapper;
 using Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Mappers
 {

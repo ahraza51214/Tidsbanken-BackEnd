@@ -27,12 +27,13 @@ namespace Tidsbanken_BackEnd.Services.IneligiblePeriodService
         // Get a IneligiblePeriod by its ID asynchronously.
         public async Task<IneligiblePeriod?> GetByIdAsync(int id)
         {
-            var ineligiblePeriod = await _context.IneligiblePeriods.Where(i => i.Id == id).FirstAsync();
-            if (ineligiblePeriod is null)
+            // Check if the IneligiblePeriod with the given ID exists.
+            if (!await IneligiblePeriodExists(id))
             {
-                // Throw an exception if the IneligiblePeriod with the specified ID is not found.
+                // Throw an exception if the IneligiblePeriod is not found.
                 throw new IneligiblePeriodNotFoundException(id);
             }
+            var ineligiblePeriod = await _context.IneligiblePeriods.Where(i => i.Id == id).Include(i => i.User).FirstAsync();
             return ineligiblePeriod;
         }
 
@@ -72,11 +73,11 @@ namespace Tidsbanken_BackEnd.Services.IneligiblePeriodService
             if (!await IneligiblePeriodExists(id))
             {
                 // Throw an exception if the IneligiblePeriod is not found.
-                throw new VacationRequestNotFoundException(id);
+                throw new IneligiblePeriodNotFoundException(id);
             }
             // Find and remove the IneligiblePeriod from the database.
-            var vacationRequest = await _context.IneligiblePeriods.FindAsync(id);
-            _context.IneligiblePeriods.Remove(vacationRequest);
+            var ineligiblePeriod = await _context.IneligiblePeriods.FindAsync(id);
+            _context.IneligiblePeriods.Remove(ineligiblePeriod);
             await _context.SaveChangesAsync();
         }
 

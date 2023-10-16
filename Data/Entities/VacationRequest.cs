@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.NetworkInformation;
 using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Data.Entities
@@ -9,6 +8,9 @@ namespace Tidsbanken_BackEnd.Data.Entities
     public class VacationRequest
     {
         public int Id { get; set; }
+
+        [Required]
+        public VacationType VacationType { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
@@ -39,7 +41,7 @@ namespace Tidsbanken_BackEnd.Data.Entities
 
         public VacationRequest()
         {
-            // Set the default Status to Pending (index 0)
+            // Set the default Status to Pending when a vacation request is craeted (index 0)
             Status = VacationRequestStatus.Pending;
         }
     }

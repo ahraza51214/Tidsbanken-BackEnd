@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Tidsbanken_BackEnd.Data.Enums;
 
 namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
@@ -17,6 +18,9 @@ namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
 
         [Required]
         public required string StatusAtTimeOfComment { get; set; }
+
+        [Required]
+        public required int VacationRequestId { get; set; } // Non-nullable for mandatory association with a vacation request
 
         [Required]
         public required string UserName { get; set; } // Non-nullable for mandatory association with a vacation request

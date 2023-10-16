@@ -10,6 +10,9 @@ namespace Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs
         public int Id { get; set; }
 
         [Required]
+        public required string VacationType { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
 
         [Required]

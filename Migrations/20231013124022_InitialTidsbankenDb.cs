@@ -77,6 +77,7 @@ namespace Tidsbanken_BackEnd.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    VacationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -156,23 +157,23 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "Description", "EndDate", "StartDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Vacation blackout period 1", new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local), 3 },
-                    { 2, "Vacation blackout period 2", new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Local), 4 },
-                    { 3, "Vacation blackout period 3", new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Local), 4 },
-                    { 4, "Vacation blackout period 4", new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local), 3 },
-                    { 5, "Vacation blackout period 5", new DateTime(2023, 11, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local), 2 }
+                    { 1, "Vacation blackout period 1", new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), 3 },
+                    { 2, "Vacation blackout period 2", new DateTime(2024, 3, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 2, 13, 0, 0, 0, 0, DateTimeKind.Local), 4 },
+                    { 3, "Vacation blackout period 3", new DateTime(2024, 6, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 4 },
+                    { 4, "Vacation blackout period 4", new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local), 3 },
+                    { 5, "Vacation blackout period 5", new DateTime(2023, 11, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "VacationRequests",
-                columns: new[] { "Id", "ApprovalDate", "ApproverId", "EndDate", "RequestDate", "StartDate", "Status", "UserId" },
+                columns: new[] { "Id", "ApprovalDate", "ApproverId", "EndDate", "RequestDate", "StartDate", "Status", "UserId", "VacationType" },
                 values: new object[,]
                 {
-                    { 1, null, null, new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6780), new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 1 },
-                    { 2, null, null, new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6790), new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 2 },
-                    { 3, null, null, new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6800), new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 3 },
-                    { 4, null, null, new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 25, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6810), new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 4 },
-                    { 5, null, null, new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6820), new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 5 }
+                    { 1, null, null, new DateTime(2023, 10, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4130), new DateTime(2023, 10, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 1, "Vacation" },
+                    { 2, null, null, new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 2, "Vacation" },
+                    { 3, null, null, new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150), new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 3, "Vacation" },
+                    { 4, null, null, new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 28, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4160), new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 4, "Vacation" },
+                    { 5, null, null, new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4170), new DateTime(2024, 1, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 5, "Vacation" }
                 });
 
             migrationBuilder.InsertData(
@@ -180,11 +181,11 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "DateCommented", "Message", "StatusAtTimeOfComment", "UserId", "VacationRequestId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6890), "This is a comment by John.", 0, null, 1 },
-                    { 2, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900), "This is a comment by Manager.", 2, null, 2 },
-                    { 3, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900), "Another comment by Manager.", 0, null, 3 },
-                    { 4, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910), "A comment by Admin.", 2, null, 4 },
-                    { 5, new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910), "A comment by Jane.", 0, null, 5 }
+                    { 1, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4250), "This is a comment by John.", 0, null, 1 },
+                    { 2, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "This is a comment by Manager.", 2, null, 2 },
+                    { 3, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "Another comment by Manager.", 0, null, 3 },
+                    { 4, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "A comment by Admin.", 2, null, 4 },
+                    { 5, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4270), "A comment by Jane.", 0, null, 5 }
                 });
 
             migrationBuilder.CreateIndex(

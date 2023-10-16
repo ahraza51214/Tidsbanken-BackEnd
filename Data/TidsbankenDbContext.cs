@@ -53,6 +53,11 @@ namespace Tidsbanken_BackEnd.Data
                 .Property(vr => vr.Status)
                 .HasConversion<String>();
 
+            // VacationRequest one to one VacationType : Has
+            modelBuilder.Entity<VacationRequest>()
+                .Property(vr => vr.VacationType)
+                .HasConversion<String>();
+
 
             // Seeding Data
             // Seed Roles
@@ -121,6 +126,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 1,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date,
                     EndDate = DateTime.Now.Date.AddDays(5),
                     Status = VacationRequestStatus.Pending,
@@ -130,6 +136,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 2,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(1),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(10),
                     Status = VacationRequestStatus.Approved,
@@ -139,6 +146,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 3,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(2),
                     EndDate = DateTime.Now.Date.AddMonths(2).AddDays(7),
                     Status = VacationRequestStatus.Pending,
@@ -148,6 +156,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 4,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(1).AddDays(15),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(20),
                     Status = VacationRequestStatus.Approved,
@@ -157,6 +166,7 @@ namespace Tidsbanken_BackEnd.Data
                 new VacationRequest
                 {
                     Id = 5,
+                    VacationType = VacationType.Vacation,
                     StartDate = DateTime.Now.Date.AddMonths(3),
                     EndDate = DateTime.Now.Date.AddMonths(3).AddDays(5),
                     Status = VacationRequestStatus.Pending,

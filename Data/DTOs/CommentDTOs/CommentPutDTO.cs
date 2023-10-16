@@ -14,6 +14,5 @@ namespace Tidsbanken_BackEnd.Data.DTOs.CommentDTOs
 
         [Required]
         public required DateTime DateCommented { get; set; }
-
     }
 }

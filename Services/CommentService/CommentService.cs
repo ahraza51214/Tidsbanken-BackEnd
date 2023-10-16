@@ -22,7 +22,60 @@ namespace Tidsbanken_BackEnd.Services.CommentService
         // Get all Comment asynchronously.
         public async Task<IEnumerable<Comment>> GetAllAsync(int vacationRequestId)
         {
-            return await _context.Comments.Where(c => c.VacationRequestId == vacationRequestId).Include(c => c.VacationRequest).ThenInclude(v => v.User).ToListAsync();
+            // Check if the associated VacationRequest exists
+            var vacationRequest = await _context.VacationRequests
+                .Where(v => v.Id == vacationRequestId)
+                .Include(v => v.Comments)
+                .FirstAsync();
+            
+            if (vacationRequest == null)
+            {
+                // Throw VacationRequestNotFoundException if it doesn't exist
+                throw new VacationRequestNotFoundException(vacationRequestId);
+            }
+
+            else if (vacationRequest.Comments == null)
+            {
+                // Throw VacationRequestNotFoundException if it doesn't exist
+                throw new Exception($"Vacation Request with id {vacationRequestId} does not have any comments");
+            }
+
+            // Query for comments based on the provided vacationRequestId
+            return await _context.Comments
+                .Where(c => c.VacationRequestId == vacationRequestId)
+                .Include(c => c.VacationRequest)
+                .ThenInclude(v => v.User)
+                .ToListAsync();
+        }
+
+
+        // Get a Comment by its ID asynchronously.
+        public async Task<Comment> GetByIdAsync(int id, int vacationRequestId)
+        {
+            // Check if the Comment with the given ID exists.
+            if (!await CommentExists(id))
+            {
+                // Throw an Exception if the Comment is not found.
+                throw new CommentNotFoundException(id);
+            }
+
+            // Retrieve the associated VacationRequest
+            var vacationRequest = await _context.VacationRequests
+                .Where(vr => vr.Id == vacationRequestId)
+                .FirstOrDefaultAsync();
+
+            if (vacationRequest == null)
+            {
+                throw new VacationRequestNotFoundException(vacationRequestId);
+            }
+
+            var comment = await _context.Comments
+                .Where(c => c.Id == id)
+                .Include(c => c.VacationRequest)
+                .ThenInclude(v => v.User)
+                .FirstAsync();
+
+            return comment;
         }
 
 
@@ -41,12 +94,13 @@ namespace Tidsbanken_BackEnd.Services.CommentService
                 .Where(vr => vr.Id == vacationRequestId)
                 .FirstOrDefaultAsync();
 
-            if (vacationRequest != null)
+            if (vacationRequest == null)
             {
-                // Set the Status property of the Comment based on the VacationRequest's status
-                obj.StatusAtTimeOfComment = vacationRequest.Status;
+                throw new VacationRequestNotFoundException(vacationRequestId);
             }
 
+            // Set the Status property of the Comment based on the VacationRequest's status
+            obj.StatusAtTimeOfComment = vacationRequest.Status;
             // Mark the Comment entity as modified and save changes to the database.
             _context.Entry(obj).State = EntityState.Modified;
             _context.SaveChanges();
@@ -63,12 +117,14 @@ namespace Tidsbanken_BackEnd.Services.CommentService
                 .Where(vr => vr.Id == vacationRequestId)
                 .FirstOrDefaultAsync();
 
-            if (vacationRequest != null)
+            if (vacationRequest == null)
             {
-                // Set the Status property of the Comment based on the VacationRequest's status
-                obj.StatusAtTimeOfComment = vacationRequest.Status;
+                throw new VacationRequestNotFoundException(vacationRequestId);
             }
 
+            // Set the Status and VacationRequestId property of the Comment based on the VacationRequest's status and id
+            obj.StatusAtTimeOfComment = vacationRequest.Status;
+            obj.VacationRequestId = vacationRequest.Id;
             // Add the Comment to the database and save changes.
             await _context.Comments.AddAsync(obj);
             await _context.SaveChangesAsync();
@@ -93,7 +149,7 @@ namespace Tidsbanken_BackEnd.Services.CommentService
             if (comment.VacationRequestId != vacationRequestId)
             {
                 throw new Exception($"Comment with ID {id} is not associated with VacationRequest ID {vacationRequestId}.");
-            }
+            }   
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
         }

@@ -12,7 +12,7 @@ using Tidsbanken_BackEnd.Data;
 namespace Tidsbanken_BackEnd.Migrations
 {
     [DbContext(typeof(TidsbankenDbContext))]
-    [Migration("20231010134648_InitialTidsbankenDb")]
+    [Migration("20231013124022_InitialTidsbankenDb")]
     partial class InitialTidsbankenDb
     {
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6890),
+                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4250),
                             Message = "This is a comment by John.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 1
@@ -70,7 +70,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 2,
-                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900),
+                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
                             Message = "This is a comment by Manager.",
                             StatusAtTimeOfComment = 2,
                             VacationRequestId = 2
@@ -78,7 +78,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 3,
-                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6900),
+                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
                             Message = "Another comment by Manager.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 3
@@ -86,7 +86,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 4,
-                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910),
+                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
                             Message = "A comment by Admin.",
                             StatusAtTimeOfComment = 2,
                             VacationRequestId = 4
@@ -94,7 +94,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 5,
-                            DateCommented = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6910),
+                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4270),
                             Message = "A comment by Jane.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 5
@@ -133,40 +133,40 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 1,
                             Description = "Vacation blackout period 1",
-                            EndDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 3
                         },
                         new
                         {
                             Id = 2,
                             Description = "Vacation blackout period 2",
-                            EndDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 3, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 2, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 4
                         },
                         new
                         {
                             Id = 3,
                             Description = "Vacation blackout period 3",
-                            EndDate = new DateTime(2024, 6, 10, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 4
                         },
                         new
                         {
                             Id = 4,
                             Description = "Vacation blackout period 4",
-                            EndDate = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 3
                         },
                         new
                         {
                             Id = 5,
                             Description = "Vacation blackout period 5",
-                            EndDate = new DateTime(2023, 11, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 11, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             UserId = 2
                         });
                 });
@@ -331,6 +331,10 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("VacationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApproverId");
@@ -343,47 +347,52 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2023, 10, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 10, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6780),
-                            StartDate = new DateTime(2023, 10, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 10, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4130),
+                            StartDate = new DateTime(2023, 10, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 1
+                            UserId = 1,
+                            VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2023, 11, 20, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6790),
-                            StartDate = new DateTime(2023, 11, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 11, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150),
+                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
-                            UserId = 2
+                            UserId = 2,
+                            VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 3,
-                            EndDate = new DateTime(2023, 12, 17, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 12, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6800),
-                            StartDate = new DateTime(2023, 12, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 12, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150),
+                            StartDate = new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 3
+                            UserId = 3,
+                            VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 4,
-                            EndDate = new DateTime(2023, 11, 30, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 25, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6810),
-                            StartDate = new DateTime(2023, 11, 25, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 11, 28, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4160),
+                            StartDate = new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
-                            UserId = 4
+                            UserId = 4,
+                            VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 5,
-                            EndDate = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2024, 1, 10, 15, 46, 48, 823, DateTimeKind.Local).AddTicks(6820),
-                            StartDate = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2024, 1, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4170),
+                            StartDate = new DateTime(2024, 1, 13, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 5
+                            UserId = 5,
+                            VacationType = "Vacation"
                         });
                 });
 

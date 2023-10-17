@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Tidsbanken_BackEnd.Data;
 using Tidsbanken_BackEnd.Data.Entities;
+using Tidsbanken_BackEnd.Data.Enums;
 using Tidsbanken_BackEnd.Exceptions;
 
 namespace Tidsbanken_BackEnd.Services.VacationRequestService
@@ -59,6 +60,7 @@ namespace Tidsbanken_BackEnd.Services.VacationRequestService
         public async Task<VacationRequest> AddAsync(VacationRequest obj)
         {
             // Add the VacationRequest to the database and save changes.
+            obj.Status = VacationRequestStatus.Pending;
             await _context.VacationRequests.AddAsync(obj);
             await _context.SaveChangesAsync();
             return obj;

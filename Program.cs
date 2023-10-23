@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Tidsbanken_BackEnd.Data;
 using Tidsbanken_BackEnd.Services;
 using Tidsbanken_BackEnd.Services.CommentService;
@@ -47,6 +50,26 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+    
+// Configuring Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(opt => opt
+              .TokenValidationParameters = new TokenValidationParameters()
+              {
+                  ValidateIssuer = true,    
+                  ValidIssuer = "https://keycloak-middleware.azurewebsites.net/realms/noroff",
+                  ValidateAudience = false, // jwt doesnt include this claim
+                  IssuerSigningKeyResolver = (token, securityToken, kid, parameters) =>
+                  {
+                      var client = new HttpClient();
+                      var keyuri = "https://keycloak-middleware.azurewebsites.net/realms/noroff/protocol/openid-connect/certs";
+                      //Retrieves the keys from keycloak instance to verify token
+                      var response = client.GetAsync(keyuri).Result;
+                      var responseString = response.Content.ReadAsStringAsync().Result;
+                      var keys = JsonConvert.DeserializeObject<JsonWebKeySet>(responseString);
+                      return keys.Keys;
+                  },    
+              });
 
 // Adding EF
 builder.Services.AddDbContext<TidsbankenDbContext>(options =>
@@ -64,10 +87,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-    });
+    }); 
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

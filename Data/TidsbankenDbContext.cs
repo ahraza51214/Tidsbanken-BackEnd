@@ -12,7 +12,6 @@ namespace Tidsbanken_BackEnd.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<VacationRequest> VacationRequests { get; set; }
         public DbSet<IneligiblePeriod> IneligiblePeriods { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -27,19 +26,11 @@ namespace Tidsbanken_BackEnd.Data
                 .HasForeignKey(v => v.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             // User one to many IneligiblePeriod : Has
             modelBuilder.Entity<IneligiblePeriod>()
                 .HasOne(ip => ip.User)
                 .WithMany(u => u.IneligiblePeriods)
                 .HasForeignKey(ip => ip.UserId);
-
-            // Role one to many User : Has
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.NoAction); // Change this to NoAction;
 
             // VacationRequest one to many Comments : Has
             modelBuilder.Entity<Comment>()
@@ -60,64 +51,23 @@ namespace Tidsbanken_BackEnd.Data
 
 
             // Seeding Data
-            // Seed Roles
-            modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, RoleName = "Employee" },
-                new Role { Id = 2, RoleName = "Admin" },
-                new Role { Id = 3, RoleName = "Manager" }
-            );
-
             // Seed Users
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
-                    Id = 1,
-                    Username = "employee1",
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Password = "hashed_password1", // Use a secure password hashing method
-                    Email = "john.doe@example.com",
-                    RoleId = 1 // Employee
-                },
-                new User
-                {
-                    Id = 2,
-                    Username = "employee2",
-                    FirstName = "Jane",
-                    LastName = "Smith",
-                    Password = "hashed_password2",
-                    Email = "jane.smith@example.com",
-                    RoleId = 1 // Employee
-                },
-                new User
-                {
-                    Id = 3,
-                    Username = "admin1",
+                    Id = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"),
+                    Username = "admin",
                     FirstName = "Admin",
                     LastName = "Admin",
-                    Password = "hashed_password3",
-                    Email = "admin@example.com",
-                    RoleId = 2 // Admin
+                    Email = "admin@admin.dk"
                 },
                 new User
                 {
-                    Id = 4,
-                    Username = "manager1",
-                    FirstName = "Manager",
-                    LastName = "Manager",
-                    Password = "hashed_password4",
-                    Email = "manager@example.com",
-                    RoleId = 3 // Manager
-                },
-                new User
-                {
-                    Id = 5,
-                    Username = "employee3",
-                    FirstName = "Sarah",
-                    LastName = "Johnson",
-                    Password = "hashed_password5",
-                    Email = "sarah.johnson@example.com",
-                    RoleId = 1 // Employee
+                    Id = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"),
+                    Username = "employee",
+                    FirstName = "Employee",
+                    LastName = "Employee",
+                    Email = "employee@employee.dk"
                 }
             );
 
@@ -130,7 +80,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date,
                     EndDate = DateTime.Now.Date.AddDays(5),
                     Status = VacationRequestStatus.Pending,
-                    UserId = 1, // User with Employee role
+                    UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), // User with Employee role
                     RequestDate = DateTime.Now
                 },
                 new VacationRequest
@@ -140,7 +90,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(1),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(10),
                     Status = VacationRequestStatus.Approved,
-                    UserId = 2, // User with Employee role
+                    UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), // User with Employee role
                     RequestDate = DateTime.Now.AddMonths(1)
                 },
                 new VacationRequest
@@ -150,7 +100,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(2),
                     EndDate = DateTime.Now.Date.AddMonths(2).AddDays(7),
                     Status = VacationRequestStatus.Pending,
-                    UserId = 3, // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"), // User with Admin role
                     RequestDate = DateTime.Now.AddMonths(2)
                 },
                 new VacationRequest
@@ -160,7 +110,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(1).AddDays(15),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(20),
                     Status = VacationRequestStatus.Approved,
-                    UserId = 4, // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"), // User with Admin role
                     RequestDate = DateTime.Now.AddMonths(1).AddDays(15)
                 },
                 new VacationRequest
@@ -170,7 +120,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(3),
                     EndDate = DateTime.Now.Date.AddMonths(3).AddDays(5),
                     Status = VacationRequestStatus.Pending,
-                    UserId = 5, // User with Employee role
+                    UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), // User with Employee role
                     RequestDate = DateTime.Now.AddMonths(3)
                 }
             );
@@ -183,7 +133,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(1),
                     EndDate = DateTime.Now.Date.AddMonths(2),
                     Description = "Vacation blackout period 1",
-                    UserId = 3 // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") // User with Admin role
                 },
                 new IneligiblePeriod
                 {
@@ -191,7 +141,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(4),
                     EndDate = DateTime.Now.Date.AddMonths(5),
                     Description = "Vacation blackout period 2",
-                    UserId = 4 // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") // User with Admin role
                 },
                 new IneligiblePeriod
                 {
@@ -199,7 +149,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(7),
                     EndDate = DateTime.Now.Date.AddMonths(8),
                     Description = "Vacation blackout period 3",
-                    UserId = 4 // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") // User with Admin role
                 },
                 new IneligiblePeriod
                 {
@@ -207,7 +157,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(2).AddDays(10),
                     EndDate = DateTime.Now.Date.AddMonths(2).AddDays(20),
                     Description = "Vacation blackout period 4",
-                    UserId = 3 // User with Manager role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") // User with Admin role
                 },
                 new IneligiblePeriod
                 {
@@ -215,7 +165,7 @@ namespace Tidsbanken_BackEnd.Data
                     StartDate = DateTime.Now.Date.AddMonths(1),
                     EndDate = DateTime.Now.Date.AddMonths(1).AddDays(5),
                     Description = "Vacation blackout period 5",
-                    UserId = 2 // User with Employee role
+                    UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") // User with Admin role
                 }
             );
 

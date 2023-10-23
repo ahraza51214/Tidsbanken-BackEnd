@@ -5,7 +5,7 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
 {
 	public class UserDTO
 	{
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -21,14 +21,7 @@ namespace Tidsbanken_BackEnd.Data.DTOs.UserDTOs
 
         [Required]
         [MaxLength(100)]
-        public required string Password { get; set; } // Consider using a more secure method for storing passwords
-
-        [Required]
-        [MaxLength(100)]
         [EmailAddress] // Ensures that the Email property is a valid email address
         public required string Email { get; set; }
-
-        [Required]
-        public required string RoleName { get; set; } 
     }
 }

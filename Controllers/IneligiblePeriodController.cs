@@ -1,6 +1,7 @@
 using System;
 using System.Net.Mime;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tidsbanken_BackEnd.Data.DTOs.IneligiblePeriodDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
@@ -14,6 +15,7 @@ namespace Tidsbanken_BackEnd.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
+    [Authorize(Roles = "ADMIN")]
     public class IneligiblePeriodController : ControllerBase
     {
         // Private field to store an instance of the ServiceFacade, providing access to IneligiblePeriod-related services.

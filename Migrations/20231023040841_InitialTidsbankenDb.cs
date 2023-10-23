@@ -14,39 +14,18 @@ namespace Tidsbanken_BackEnd.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +37,7 @@ namespace Tidsbanken_BackEnd.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,9 +60,9 @@ namespace Tidsbanken_BackEnd.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApproverId = table.Column<int>(type: "int", nullable: true),
+                    ApproverId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ApprovalDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -112,7 +91,7 @@ namespace Tidsbanken_BackEnd.Migrations
                     DateCommented = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusAtTimeOfComment = table.Column<int>(type: "int", nullable: false),
                     VacationRequestId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,25 +110,12 @@ namespace Tidsbanken_BackEnd.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "RoleName" },
-                values: new object[,]
-                {
-                    { 1, "Employee" },
-                    { 2, "Admin" },
-                    { 3, "Manager" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Email", "FirstName", "LastName", "Password", "RoleId", "Username" },
+                columns: new[] { "Id", "Email", "FirstName", "LastName", "Username" },
                 values: new object[,]
                 {
-                    { 1, "john.doe@example.com", "John", "Doe", "hashed_password1", 1, "employee1" },
-                    { 2, "jane.smith@example.com", "Jane", "Smith", "hashed_password2", 1, "employee2" },
-                    { 3, "admin@example.com", "Admin", "Admin", "hashed_password3", 2, "admin1" },
-                    { 4, "manager@example.com", "Manager", "Manager", "hashed_password4", 3, "manager1" },
-                    { 5, "sarah.johnson@example.com", "Sarah", "Johnson", "hashed_password5", 1, "employee3" }
+                    { new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"), "admin@admin.dk", "Admin", "Admin", "admin" },
+                    { new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), "employee@employee.dk", "Employee", "Employee", "employee" }
                 });
 
             migrationBuilder.InsertData(
@@ -157,11 +123,11 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "Description", "EndDate", "StartDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Vacation blackout period 1", new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), 3 },
-                    { 2, "Vacation blackout period 2", new DateTime(2024, 3, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 2, 13, 0, 0, 0, 0, DateTimeKind.Local), 4 },
-                    { 3, "Vacation blackout period 3", new DateTime(2024, 6, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local), 4 },
-                    { 4, "Vacation blackout period 4", new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local), 3 },
-                    { 5, "Vacation blackout period 5", new DateTime(2023, 11, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), 2 }
+                    { 1, "Vacation blackout period 1", new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local), new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") },
+                    { 2, "Vacation blackout period 2", new DateTime(2024, 3, 23, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 2, 23, 0, 0, 0, 0, DateTimeKind.Local), new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") },
+                    { 3, "Vacation blackout period 3", new DateTime(2024, 6, 23, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 5, 23, 0, 0, 0, 0, DateTimeKind.Local), new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") },
+                    { 4, "Vacation blackout period 4", new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local), new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") },
+                    { 5, "Vacation blackout period 5", new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local), new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86") }
                 });
 
             migrationBuilder.InsertData(
@@ -169,11 +135,11 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "ApprovalDate", "ApproverId", "EndDate", "RequestDate", "StartDate", "Status", "UserId", "VacationType" },
                 values: new object[,]
                 {
-                    { 1, null, null, new DateTime(2023, 10, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4130), new DateTime(2023, 10, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 1, "Vacation" },
-                    { 2, null, null, new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150), new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 2, "Vacation" },
-                    { 3, null, null, new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150), new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 3, "Vacation" },
-                    { 4, null, null, new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 28, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4160), new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local), "Approved", 4, "Vacation" },
-                    { 5, null, null, new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4170), new DateTime(2024, 1, 13, 0, 0, 0, 0, DateTimeKind.Local), "Pending", 5, "Vacation" }
+                    { 1, null, null, new DateTime(2023, 10, 28, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5540), new DateTime(2023, 10, 23, 0, 0, 0, 0, DateTimeKind.Local), "Pending", new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), "Vacation" },
+                    { 2, null, null, new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 11, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5550), new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local), "Approved", new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), "Vacation" },
+                    { 3, null, null, new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5560), new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local), "Pending", new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"), "Vacation" },
+                    { 4, null, null, new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2023, 12, 8, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5570), new DateTime(2023, 12, 8, 0, 0, 0, 0, DateTimeKind.Local), "Approved", new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"), "Vacation" },
+                    { 5, null, null, new DateTime(2024, 1, 28, 0, 0, 0, 0, DateTimeKind.Local), new DateTime(2024, 1, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5580), new DateTime(2024, 1, 23, 0, 0, 0, 0, DateTimeKind.Local), "Pending", new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"), "Vacation" }
                 });
 
             migrationBuilder.InsertData(
@@ -181,11 +147,11 @@ namespace Tidsbanken_BackEnd.Migrations
                 columns: new[] { "Id", "DateCommented", "Message", "StatusAtTimeOfComment", "UserId", "VacationRequestId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4250), "This is a comment by John.", 0, null, 1 },
-                    { 2, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "This is a comment by Manager.", 2, null, 2 },
-                    { 3, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "Another comment by Manager.", 0, null, 3 },
-                    { 4, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260), "A comment by Admin.", 2, null, 4 },
-                    { 5, new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4270), "A comment by Jane.", 0, null, 5 }
+                    { 1, new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5800), "This is a comment by John.", 0, null, 1 },
+                    { 2, new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5800), "This is a comment by Manager.", 2, null, 2 },
+                    { 3, new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810), "Another comment by Manager.", 0, null, 3 },
+                    { 4, new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810), "A comment by Admin.", 2, null, 4 },
+                    { 5, new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810), "A comment by Jane.", 0, null, 5 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -202,11 +168,6 @@ namespace Tidsbanken_BackEnd.Migrations
                 name: "IX_IneligiblePeriods_UserId",
                 table: "IneligiblePeriods",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
-                table: "Users",
-                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VacationRequests_ApproverId",
@@ -233,9 +194,6 @@ namespace Tidsbanken_BackEnd.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
         }
     }
 }

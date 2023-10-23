@@ -15,7 +15,7 @@ namespace Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs
         public DateTime EndDate { get; set; }
 
         [Required]
-        public required int UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [Required]
         public DateTime RequestDate { get; set; }

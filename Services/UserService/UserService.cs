@@ -20,12 +20,12 @@ namespace Tidsbanken_BackEnd.Services.UserService
         // Get all Users asynchronously.
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.Users.Include(u => u.Role).ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
 
         // Get a User by its ID asynchronously.
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
             var user = await _context.Users.Where(u => u.Id == id).FirstAsync();
             if (user is null)
@@ -66,7 +66,7 @@ namespace Tidsbanken_BackEnd.Services.UserService
 
 
         // Delete a User by ID asynchronously.
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             // Check if the User with the given ID exists.
             if (!await UserExists(id))
@@ -82,9 +82,23 @@ namespace Tidsbanken_BackEnd.Services.UserService
 
 
         // Check if a User with a given ID exists in the database.
-        private async Task<bool> UserExists(int id)
+        private async Task<bool> UserExists(Guid id)
         {
             return await _context.Users.AnyAsync(u => u.Id == id);
+        }
+
+
+        // Signature method from ICrudService, not implemented becuase we use Guid type for Id in User and not int
+        public Task<User?> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        // Signature method from ICrudService, not implemented becuase we use Guid type for Id in User and not int
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

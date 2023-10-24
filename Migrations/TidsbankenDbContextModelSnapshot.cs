@@ -17,7 +17,7 @@ namespace Tidsbanken_BackEnd.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -41,8 +41,8 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Property<int>("StatusAtTimeOfComment")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("VacationRequestId")
                         .HasColumnType("int");
@@ -59,7 +59,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4250),
+                            DateCommented = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5800),
                             Message = "This is a comment by John.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 1
@@ -67,7 +67,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 2,
-                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
+                            DateCommented = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5800),
                             Message = "This is a comment by Manager.",
                             StatusAtTimeOfComment = 2,
                             VacationRequestId = 2
@@ -75,7 +75,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 3,
-                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
+                            DateCommented = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810),
                             Message = "Another comment by Manager.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 3
@@ -83,7 +83,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 4,
-                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4260),
+                            DateCommented = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810),
                             Message = "A comment by Admin.",
                             StatusAtTimeOfComment = 2,
                             VacationRequestId = 4
@@ -91,7 +91,7 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 5,
-                            DateCommented = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4270),
+                            DateCommented = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5810),
                             Message = "A comment by Jane.",
                             StatusAtTimeOfComment = 0,
                             VacationRequestId = 5
@@ -116,8 +116,8 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -130,171 +130,86 @@ namespace Tidsbanken_BackEnd.Migrations
                         {
                             Id = 1,
                             Description = "Vacation blackout period 1",
-                            EndDate = new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = 3
+                            EndDate = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86")
                         },
                         new
                         {
                             Id = 2,
                             Description = "Vacation blackout period 2",
-                            EndDate = new DateTime(2024, 3, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 2, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = 4
+                            EndDate = new DateTime(2024, 3, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 2, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86")
                         },
                         new
                         {
                             Id = 3,
                             Description = "Vacation blackout period 3",
-                            EndDate = new DateTime(2024, 6, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2024, 5, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = 4
+                            EndDate = new DateTime(2024, 6, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 5, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86")
                         },
                         new
                         {
                             Id = 4,
                             Description = "Vacation blackout period 4",
-                            EndDate = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = 3
+                            EndDate = new DateTime(2024, 1, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2024, 1, 2, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86")
                         },
                         new
                         {
                             Id = 5,
                             Description = "Vacation blackout period 5",
-                            EndDate = new DateTime(2023, 11, 18, 0, 0, 0, 0, DateTimeKind.Local),
-                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
-                            UserId = 2
-                        });
-                });
-
-            modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RoleName = "Employee"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RoleName = "Manager"
+                            EndDate = new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local),
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86")
                         });
                 });
 
             modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Email = "john.doe@example.com",
-                            FirstName = "John",
-                            LastName = "Doe",
-                            Password = "hashed_password1",
-                            RoleId = 1,
-                            Username = "employee1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "jane.smith@example.com",
-                            FirstName = "Jane",
-                            LastName = "Smith",
-                            Password = "hashed_password2",
-                            RoleId = 1,
-                            Username = "employee2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "admin@example.com",
+                            Id = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"),
+                            Email = "admin@admin.dk",
                             FirstName = "Admin",
                             LastName = "Admin",
-                            Password = "hashed_password3",
-                            RoleId = 2,
-                            Username = "admin1"
+                            Username = "admin"
                         },
                         new
                         {
-                            Id = 4,
-                            Email = "manager@example.com",
-                            FirstName = "Manager",
-                            LastName = "Manager",
-                            Password = "hashed_password4",
-                            RoleId = 3,
-                            Username = "manager1"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Email = "sarah.johnson@example.com",
-                            FirstName = "Sarah",
-                            LastName = "Johnson",
-                            Password = "hashed_password5",
-                            RoleId = 1,
-                            Username = "employee3"
+                            Id = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"),
+                            Email = "employee@employee.dk",
+                            FirstName = "Employee",
+                            LastName = "Employee",
+                            Username = "employee"
                         });
                 });
 
@@ -309,8 +224,8 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Property<DateTime?>("ApprovalDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ApproverId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ApproverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -325,8 +240,8 @@ namespace Tidsbanken_BackEnd.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("VacationType")
                         .IsRequired()
@@ -344,51 +259,51 @@ namespace Tidsbanken_BackEnd.Migrations
                         new
                         {
                             Id = 1,
-                            EndDate = new DateTime(2023, 10, 18, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 10, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4130),
-                            StartDate = new DateTime(2023, 10, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 10, 28, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 10, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5540),
+                            StartDate = new DateTime(2023, 10, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 1,
+                            UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"),
                             VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 2,
-                            EndDate = new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150),
-                            StartDate = new DateTime(2023, 11, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 11, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5550),
+                            StartDate = new DateTime(2023, 11, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
-                            UserId = 2,
+                            UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"),
                             VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 3,
-                            EndDate = new DateTime(2023, 12, 20, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 12, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4150),
-                            StartDate = new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 30, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 12, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5560),
+                            StartDate = new DateTime(2023, 12, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 3,
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"),
                             VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 4,
-                            EndDate = new DateTime(2023, 12, 3, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2023, 11, 28, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4160),
-                            StartDate = new DateTime(2023, 11, 28, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 12, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2023, 12, 8, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5570),
+                            StartDate = new DateTime(2023, 12, 8, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Approved",
-                            UserId = 4,
+                            UserId = new Guid("6786c233-5f89-4e5e-af84-2ff7db03ba86"),
                             VacationType = "Vacation"
                         },
                         new
                         {
                             Id = 5,
-                            EndDate = new DateTime(2024, 1, 18, 0, 0, 0, 0, DateTimeKind.Local),
-                            RequestDate = new DateTime(2024, 1, 13, 14, 40, 22, 760, DateTimeKind.Local).AddTicks(4170),
-                            StartDate = new DateTime(2024, 1, 13, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2024, 1, 28, 0, 0, 0, 0, DateTimeKind.Local),
+                            RequestDate = new DateTime(2024, 1, 23, 6, 8, 41, 613, DateTimeKind.Local).AddTicks(5580),
+                            StartDate = new DateTime(2024, 1, 23, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = "Pending",
-                            UserId = 5,
+                            UserId = new Guid("7d94f7d7-da61-49a0-b0e3-8790b93168de"),
                             VacationType = "Vacation"
                         });
                 });
@@ -419,17 +334,6 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.User", b =>
-                {
-                    b.HasOne("Tidsbanken_BackEnd.Data.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.VacationRequest", b =>
                 {
                     b.HasOne("Tidsbanken_BackEnd.Data.Entities.User", "Approver")
@@ -445,11 +349,6 @@ namespace Tidsbanken_BackEnd.Migrations
                     b.Navigation("Approver");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Tidsbanken_BackEnd.Data.Entities.User", b =>

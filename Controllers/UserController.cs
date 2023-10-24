@@ -1,5 +1,6 @@
 using System;
 using System.Net.Mime;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tidsbanken_BackEnd.Data.DTOs.UserDTOs;
@@ -53,11 +54,12 @@ namespace Tidsbanken_BackEnd.Controllers
         /// A User object if found; otherwise, an error message
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(int id)
+        public async Task<ActionResult<UserDTO>> GetUser()
         {
+            string subject = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             try
             {
-                return _mapper.Map<UserDTO>(await _serviceFacade._userService.GetByIdAsync(id));
+                return _mapper.Map<UserDTO>(await _serviceFacade._userService.GetByIdAsync(Guid.Parse(subject)));
             }
             catch (UserNotFoundException ex)
             {
@@ -75,13 +77,12 @@ namespace Tidsbanken_BackEnd.Controllers
         /// Returns NoContent if the operation is successful; otherwise, BadRequest or NotFound based on the error.
         /// </returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
+        public async Task<IActionResult> PutUser(Guid id, UserDTO userDTO)
         {
             if (id != userDTO.Id)
             {
                 return BadRequest($"the id {id} given for User to be updated does not match the User id {userDTO.Id} given in the body");
             }
-
             try
             {
                 await _serviceFacade._userService.UpdateAsync(_mapper.Map<User>(userDTO));
@@ -102,11 +103,23 @@ namespace Tidsbanken_BackEnd.Controllers
         /// <returns>
         /// Returns a CreatedAtAction result, directing to the GetUser action to retrieve the newly added user; otherwise, an error response.
         /// </returns>
-        [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUser(UserPostDTO userDTO)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDTO>> PostUser()
         {
-            var newUser = await _serviceFacade._userService.AddAsync(_mapper.Map<User>(userDTO));
-
+            string subject = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string username = User.Claims.FirstOrDefault(claim => claim.Type == "preferred_username").Value;
+            string firstName = User.FindFirst(ClaimTypes.GivenName).Value;
+            string lastName = User.FindFirst(ClaimTypes.Surname).Value;
+            string email = User.FindFirst(ClaimTypes.Email).Value;
+            User newUser = new User()
+            {
+                Id = Guid.Parse(subject),
+                Username = username,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email
+            };
+            await _serviceFacade._userService.AddAsync(newUser);
             return CreatedAtAction("GetUser", new { id = newUser.Id }, _mapper.Map<UserDTO>(newUser));
         }
 
@@ -119,7 +132,7 @@ namespace Tidsbanken_BackEnd.Controllers
         /// Returns a NoContent response if deletion is successful; otherwise, a NotFound response with an error message
         /// </returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             try
             {

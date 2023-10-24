@@ -23,13 +23,13 @@ namespace Tidsbanken_BackEnd.Data.Entities
 
         [Required]
         [ForeignKey("User")]
-        public required int UserId { get; set; } // Nullable for optional user
+        public required Guid UserId { get; set; } // Nullable for optional user
 
         [Required]
         public DateTime RequestDate { get; set; }
 
         [ForeignKey("Approver")]
-        public int? ApproverId { get; set; } // Nullable for optional approver
+        public Guid? ApproverId { get; set; } // Nullable for optional approver
 
         public DateTime? ApprovalDate { get; set; }
 

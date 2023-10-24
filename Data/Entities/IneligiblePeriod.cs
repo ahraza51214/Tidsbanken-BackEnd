@@ -19,7 +19,7 @@ namespace Tidsbanken_BackEnd.Data.Entities
 
         [Required]
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         // Navigation properties
         public User? User { get; set; }

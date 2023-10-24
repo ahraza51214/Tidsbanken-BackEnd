@@ -22,12 +22,12 @@ namespace Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs
         public required string Status { get; set; }
 
         [Required]
-        public required int UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [Required]
         public DateTime RequestDate { get; set; }
 
-        public int? ApproverId { get; set; } 
+        public Guid? ApproverId { get; set; } 
 
         public DateTime? ApprovalDate { get; set; }
     }

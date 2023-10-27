@@ -1,6 +1,8 @@
 using System;
 using System.Net.Mime;
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tidsbanken_BackEnd.Data.DTOs.VacationRequestDTOs;
 using Tidsbanken_BackEnd.Data.Entities;
@@ -41,7 +43,9 @@ namespace Tidsbanken_BackEnd.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VacationRequestDTO>>> GetVacationRequests()
         {
-            return Ok(_mapper.Map<List<VacationRequestDTO>>(await _serviceFacade._vacationRequestService.GetAllAsync()));
+            string subject = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            return Ok(_mapper.Map<List<VacationRequestDTO>>(await _serviceFacade._vacationRequestService.GetAllAsync(Guid.Parse(subject))));
         }
 
 

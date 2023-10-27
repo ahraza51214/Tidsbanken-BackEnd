@@ -15,7 +15,6 @@ namespace Tidsbanken_BackEnd.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiConventionType(typeof(DefaultApiConventions))]
-    [Authorize(Roles = "ADMIN")]
     public class IneligiblePeriodController : ControllerBase
     {
         // Private field to store an instance of the ServiceFacade, providing access to IneligiblePeriod-related services.

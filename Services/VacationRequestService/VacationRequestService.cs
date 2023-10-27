@@ -19,9 +19,9 @@ namespace Tidsbanken_BackEnd.Services.VacationRequestService
         }
 
         // Get all VacationRequest asynchronously.
-        public async Task<IEnumerable<VacationRequest>> GetAllAsync()
+        public async Task<IEnumerable<VacationRequest>> GetAllAsync(Guid id)
         {
-            return await _context.VacationRequests.ToListAsync();
+            return await _context.VacationRequests.Where(v => v.UserId == id).ToListAsync();
         }
 
 
@@ -87,6 +87,11 @@ namespace Tidsbanken_BackEnd.Services.VacationRequestService
         private async Task<bool> VacationRequestExists(int id)
         {
             return await _context.VacationRequests.AnyAsync(v => v.Id == id);
+        }
+
+        public Task<IEnumerable<VacationRequest>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
